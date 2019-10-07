@@ -1,18 +1,23 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 import Form from './components/Form'
 import Filter from './components/Filter'
 import Contacts from './components/Contacts'
 
 const App = () => {
-  const [contacts, setContacts] = useState([
-    { name: 'Arto Hellas', phone: '040-123456' },
-    { name: 'Ada Lovelace', phone: '39-44-5323523' },
-    { name: 'Dan Abramov', phone: '12-43-234345' },
-    { name: 'Mary Poppendieck', phone: '39-23-6423122' }
-  ])
+  const [contacts, setContacts] = useState([])
   const [newName, setNewName] = useState('')
   const [newPhone, setNewPhone] = useState('')
   const [filter, setFilter] = useState('')
+
+  useEffect(() => {
+    axios
+      .get('http://localhost:3001/contacts')
+      .then(res => {
+        console.log(res.data)
+        setContacts(res.data)
+      })
+  }, [])
 
   const addContact = (e) => {
     e.preventDefault()
@@ -62,7 +67,7 @@ const App = () => {
       />
 
       <h2>Numbers</h2>
-      <Contacts contacts={contacts} filter={showContacts}/>
+      <Contacts contacts={showContacts}/>
     </div>
   )
 }

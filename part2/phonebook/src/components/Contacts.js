@@ -1,10 +1,10 @@
 import React from 'react'
 import Contact from './Contact'
 
-const Contacts = ({ contacts, filter }) => {
-  const contactComponent = () => filter.map(contact =>
+const Contacts = ({ contacts }) => {
+  const contactComponent = () => contacts.map(contact =>
     <Contact
-      key={contact.name}
+      key={contact.id}
       contact={contact}
     />
   )
