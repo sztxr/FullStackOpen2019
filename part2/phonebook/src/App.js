@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
 import Form from './components/Form'
 import Filter from './components/Filter'
 import Contacts from './components/Contacts'
+import contactServices from './services/contact'
 
 const App = () => {
   const [contacts, setContacts] = useState([])
@@ -11,42 +11,72 @@ const App = () => {
   const [filter, setFilter] = useState('')
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/contacts')
-      .then(res => {
-        console.log(res.data)
-        setContacts(res.data)
+    contactServices
+      .getAll()
+      .then(initialContacts => {
+        // console.log(initialContacts)
+        setContacts(initialContacts)
       })
   }, [])
 
-  const addContact = (e) => {
+  const addContact = e => {
     e.preventDefault()
 
     const all = contacts.map(item => item.name)
-    if (all.includes(newName)) {
-      alert(`${newName} is already added to phonebook`)
-      return
-    }
-
     const contactObj = {
       name: newName,
       phone: newPhone
     }
 
-    setContacts([...contacts, contactObj])
-    setNewName('')
-    setNewPhone('')
+    // console.log(allPhones)
+
+    if (all.includes(newName)) {
+      const contact = contacts.find(item => item.name === newName)
+
+      if (window.confirm(`Contact ${newName} already exist, replace old phone number with one?`)) {
+        contactServices
+          .update(contact.id, contactObj)
+          .then(returnedContact => {
+            // console.log(returnedContact)
+            setContacts(contacts.map(item => item.name !== newName ? item : returnedContact))
+            setNewName('')
+            setNewPhone('')
+          })
+      }
+      return
+    }
+
+    contactServices
+      .create(contactObj)
+      .then(returnedContact => {
+        setContacts([...contacts, returnedContact])
+        setNewName('')
+        setNewPhone('')
+      })
   }
 
-  const handleNameChange = (e) => {
+  const deleteContact = id => {
+    const contact = contacts.find(c => c.id === id)
+
+    if (window.confirm(`Delete ${contact.name}?`)) {
+      contactServices
+        .remove(contact.id)
+        .then(() => {
+          setContacts(contacts.filter(item => item.id !== id))
+          alert(`${contact.name} has been deleted from the phone book`)
+        })
+    }
+  }
+
+  const handleNameChange = e => {
     setNewName(e.target.value)
   }
 
-  const handlePhoneChange = (e) => {
+  const handlePhoneChange = e => {
     setNewPhone(e.target.value)
   }
 
-  const handleSearch = (e) => {
+  const handleSearch = e => {
     setFilter(e.target.value)
   }
 
@@ -62,12 +92,12 @@ const App = () => {
       <h2>Add a new contact</h2>
       <Form
         onSubmit={addContact}
-        name={{ value: newName, onChange: handleNameChange}}
-        phone={{ value: newPhone, onChange: handlePhoneChange}}
+        name={{ value: newName, onChange: handleNameChange }}
+        phone={{ value: newPhone, onChange: handlePhoneChange }}
       />
 
       <h2>Numbers</h2>
-      <Contacts contacts={showContacts}/>
+      <Contacts contacts={showContacts} deleteContact={deleteContact} />
     </div>
   )
 }
