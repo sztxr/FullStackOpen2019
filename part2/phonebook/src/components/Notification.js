@@ -1,28 +1,16 @@
 import React from 'react'
 
-const Notification = ({ success, error}) => {
-  // console.log(success, error)
-
+const Notification = ({ notification }) => {
+  // console.log(notification)
   const style = {
-    success: {
-      backgroundColor: '#58ae5a',
-    },
-    error: {
-      backgroundColor: 'rgb(185, 40, 52)',
-    }
+    backgroundColor: notification.type === 'success' ? '#58ae5a' : '#b92834'
   }
 
-  if (success === null && error === null) return null
-  if (success) {
-    return (
-      <div className='notification' style={style.success}>
-        {success}
-      </div>
-    )
-  }
+  if (notification.message === null) return null
+
   return (
-    <div className='notification' style={style.error}>
-      {error}
+    <div className='notification' style={style}>
+      {notification.message}
     </div>
   )
 }

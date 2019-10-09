@@ -10,8 +10,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newPhone, setNewPhone] = useState('')
   const [filter, setFilter] = useState('')
-  const [errorMessage, setErrorMessage] = useState(null)
-  const [successMessage, setSuccessMessage] = useState(null)
+  const [notification, setNotification] = useState({ message: null })
 
   useEffect(() => {
     contactServices
@@ -42,18 +41,11 @@ const App = () => {
             setContacts(contacts.map(item => item.name !== newName ? item : returnedContact))
             setNewName('')
             setNewPhone('')
-
-            setSuccessMessage(`Success: '${newName}' has been updated`)
-            setTimeout(() => {
-              setSuccessMessage(null)
-            }, 5000)
+            showNotification(`Success: '${newName}' has been updated`, 'success')
           })
           .catch(err => {
             setContacts(contacts.filter(item => item.id !== newName.id))
-            setErrorMessage(`Error: '${newName}' does not exist`)
-            setTimeout(() => {
-              setErrorMessage(null)
-            }, 5000)
+            showNotification(`Error: '${newName}' does not exist`, 'error')
           })
       }
       return
@@ -65,11 +57,7 @@ const App = () => {
         setContacts([...contacts, returnedContact])
         setNewName('')
         setNewPhone('')
-
-        setSuccessMessage(`Success: '${newName} has been added to the phone book'`)
-        setTimeout(() => {
-          setSuccessMessage(null)
-        }, 5000)
+        showNotification(`Success: '${newName} has been added to the phone book'`, 'success')
       })
   }
 
@@ -81,19 +69,20 @@ const App = () => {
         .remove(contact.id)
         .then(() => {
           setContacts(contacts.filter(item => item.id !== id))
-          setSuccessMessage(`Success: '${contact.name}' has been deleted from the phone book`)
-          setTimeout(() => {
-            setSuccessMessage(null)
-          }, 5000)
+          showNotification(`Success: '${contact.name}' has been deleted from the phone book`, 'success')
         })
         .catch(err => {
           setContacts(contacts.filter(item => item.id !== id))
-          setErrorMessage(`Error: '${contact.name}' does not exist`)
-          setTimeout(() => {
-            setErrorMessage(null)
-          }, 5000)
+          showNotification(`Error: '${contact.name}' does not exist`, 'error')
         })
     }
+  }
+
+  const showNotification = (message, type = 'success') => {
+    setNotification({ message, type })
+    setTimeout(() => {
+      setNotification({ message: null })
+    }, 5000)
   }
 
   const handleNameChange = e => {
@@ -116,7 +105,7 @@ const App = () => {
     <div>
       <h1>Phonebook</h1>
 
-      <Notification success={successMessage} error={errorMessage} />
+      <Notification notification={notification} />
 
       <Filter value={filter} onChange={handleSearch} />
 
