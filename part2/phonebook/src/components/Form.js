@@ -5,7 +5,8 @@ const Form = ({ onSubmit, name, phone }) => {
     <form onSubmit={onSubmit}>
       <div>
         name: <input type="text" value={name.value} name="name" onChange={name.onChange} />
-        phone: <input type="text" value={name.phone} name="phone" onChange={name.onChange} />
+        <br/>
+        phone: <input type="text" value={phone.value} name="phone" onChange={phone.onChange} />
       </div>
       <div>
         <button type="submit">add</button>
