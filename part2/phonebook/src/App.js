@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react'
+import contactServices from './services/contact'
 import Form from './components/Form'
 import Filter from './components/Filter'
 import Contacts from './components/Contacts'
-import contactServices from './services/contact'
+import Notification from './components/Notification'
 
 const App = () => {
   const [contacts, setContacts] = useState([])
   const [newName, setNewName] = useState('')
   const [newPhone, setNewPhone] = useState('')
   const [filter, setFilter] = useState('')
+  const [errorMessage, setErrorMessage] = useState(null)
+  const [successMessage, setSuccessMessage] = useState(null)
 
   useEffect(() => {
     contactServices
@@ -28,8 +31,6 @@ const App = () => {
       phone: newPhone
     }
 
-    // console.log(allPhones)
-
     if (all.includes(newName)) {
       const contact = contacts.find(item => item.name === newName)
 
@@ -41,6 +42,18 @@ const App = () => {
             setContacts(contacts.map(item => item.name !== newName ? item : returnedContact))
             setNewName('')
             setNewPhone('')
+
+            setSuccessMessage(`Success: '${newName}' has been updated`)
+            setTimeout(() => {
+              setSuccessMessage(null)
+            }, 5000)
+          })
+          .catch(err => {
+            setContacts(contacts.filter(item => item.id !== newName.id))
+            setErrorMessage(`Error: '${newName}' does not exist`)
+            setTimeout(() => {
+              setErrorMessage(null)
+            }, 5000)
           })
       }
       return
@@ -52,6 +65,11 @@ const App = () => {
         setContacts([...contacts, returnedContact])
         setNewName('')
         setNewPhone('')
+
+        setSuccessMessage(`Success: '${newName} has been added to the phone book'`)
+        setTimeout(() => {
+          setSuccessMessage(null)
+        }, 5000)
       })
   }
 
@@ -63,7 +81,17 @@ const App = () => {
         .remove(contact.id)
         .then(() => {
           setContacts(contacts.filter(item => item.id !== id))
-          alert(`${contact.name} has been deleted from the phone book`)
+          setSuccessMessage(`Success: '${contact.name}' has been deleted from the phone book`)
+          setTimeout(() => {
+            setSuccessMessage(null)
+          }, 5000)
+        })
+        .catch(err => {
+          setContacts(contacts.filter(item => item.id !== id))
+          setErrorMessage(`Error: '${contact.name}' does not exist`)
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 5000)
         })
     }
   }
@@ -87,6 +115,9 @@ const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
+
+      <Notification success={successMessage} error={errorMessage} />
+
       <Filter value={filter} onChange={handleSearch} />
 
       <h2>Add a new contact</h2>

@@ -2,9 +2,9 @@ import React from 'react'
 
 const Contact = ({ contact, deleteContact }) => {
   return (
-    <li>
-      {contact.name} {contact.phone}
-      <button onClick={deleteContact}>delete</button>
+    <li className="contact">
+      <strong>{contact.name}</strong> &ndash; {contact.phone}
+      <button className="btn btn-secondary" onClick={deleteContact}>delete</button>
     </li>
   )
 }
