@@ -24,32 +24,32 @@ const App = () => {
   const addContact = e => {
     e.preventDefault()
 
-    const all = contacts.map(item => item.name)
+    // const all = contacts.map(item => item.name)
     const contactObj = {
       name: newName,
       phone: newPhone
     }
 
-    if (all.includes(newName)) {
-      const contact = contacts.find(item => item.name === newName)
+    // if (all.includes(newName)) {
+    //   const contact = contacts.find(item => item.name === newName)
 
-      if (window.confirm(`Contact ${newName} already exist, replace old phone number with one?`)) {
-        contactServices
-          .update(contact.id, contactObj)
-          .then(returnedContact => {
-            // console.log(returnedContact)
-            setContacts(contacts.map(item => item.name !== newName ? item : returnedContact))
-            setNewName('')
-            setNewPhone('')
-            showNotification(`Success: '${newName}' has been updated`, 'success')
-          })
-          .catch(err => {
-            setContacts(contacts.filter(item => item.id !== newName.id))
-            showNotification(`Error: '${newName}' does not exist`, 'error')
-          })
-      }
-      return
-    }
+    //   if (window.confirm(`Contact ${newName} already exist, replace old phone number with one?`)) {
+    //     contactServices
+    //       .update(contact.id, contactObj)
+    //       .then(returnedContact => {
+    //         // console.log(returnedContact)
+    //         setContacts(contacts.map(item => item.name !== newName ? item : returnedContact))
+    //         setNewName('')
+    //         setNewPhone('')
+    //         showNotification(`Success: '${newName}' has been updated`, 'success')
+    //       })
+    //       .catch(err => {
+    //         setContacts(contacts.filter(item => item.id !== newName.id))
+    //         showNotification(`Error: '${newName}' does not exist`, 'error')
+    //       })
+    //   }
+    //   return
+    // }
 
     contactServices
       .create(contactObj)
@@ -58,6 +58,10 @@ const App = () => {
         setNewName('')
         setNewPhone('')
         showNotification(`Success: '${newName} has been added to the phone book'`, 'success')
+      })
+      .catch(err => {
+        console.log(err.response.data)
+        showNotification(`Error: ${err.response.data.error}`, 'error')
       })
   }
 
