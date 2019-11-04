@@ -1,0 +1,9 @@
+PUT http://localhost:3001/api/blogs/5dc08fb78cdfd30664cb998e
+Content-Type: application/json
+
+{
+  "title": "Full Stack Open 2019 – React, Redux, Node.js, MongoDB, and GraphQL",
+  "author": "University of Helsinki",
+  "url": "https://fullstackopen.com",
+  "likes": 1
+}

@@ -1,0 +1,8 @@
+POST http://localhost:3001/api/blogs
+Content-Type: application/json
+
+{
+  "title": "Full Stack Open 2019 by University of Helsinki – React, Redux, Node.js, MongoDB, and GraphQL",
+  "author": "Full Stack Open",
+  "url": "https://fullstackopen.com"
+}
