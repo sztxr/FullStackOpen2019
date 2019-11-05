@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node index.js",
     "watch": "nodemon index.js",
-    "lint": "eslint . || exit 0"
+    "lint": "eslint . || exit 0",
+    "test": "jest --verbose"
   },
   "author": "sztxr",
   "license": "ISC",
@@ -14,12 +15,14 @@
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "lodash": "^4.17.15",
     "mongoose": "^5.7.7",
     "mongoose-unique-validator": "^2.0.3",
     "morgan": "^1.9.1"
   },
   "devDependencies": {
     "eslint": "^6.5.1",
+    "jest": "^24.9.0",
     "nodemon": "^1.19.3"
   }
 }
