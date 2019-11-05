@@ -7,7 +7,6 @@
     "start": "node index.js",
     "watch": "nodemon index.js",
     "lint": "eslint . || exit 0",
-    "test": "jest --verbose"
   },
   "author": "sztxr",
   "license": "ISC",
@@ -22,7 +21,6 @@
   },
   "devDependencies": {
     "eslint": "^6.5.1",
-    "jest": "^24.9.0",
     "nodemon": "^1.19.3"
   }
 }
