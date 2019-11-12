@@ -27,71 +27,94 @@ beforeEach(async () => {
   await Promise.all(promiseArray)
 })
 
-test('blogs are returned as json', async () => {
-  await api
-    .get('/api/blogs')
-    .expect(200)
-    .expect('Content-Type', /application\/json/)
+describe('when there are initially some blogs saved', () => {
+  test('blogs are returned as json', async () => {
+    await api
+      .get('/api/blogs')
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+  })
+
+  test('all blogs are returned', async () => {
+    const response = await api.get('/api/blogs')
+    expect(response.body.length).toBe(initialBlogs.length)
+  })
 })
 
-test('all blogs are returned', async () => {
-  const response = await api.get('/api/blogs')
-  expect(response.body.length).toBe(initialBlogs.length)
+describe('addition of a new blog', () => {
+  test('succeeds with valid data', async () => {
+    const newBlog = {
+      title: 'Canonical string reduction',
+      author: 'Edsger W. Dijkstra',
+      url: 'http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html',
+      likes: 12
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+
+    const response = await api.get('/api/blogs')
+    const titles = response.body.map(blog => blog.title)
+
+    expect(response.body.length).toBe(initialBlogs.length + 1)
+    expect(titles).toContain('Canonical string reduction')
+  })
+
+  test('fails with status code 400, if "title" and "url" are missing', async () => {
+    const newBlog = {
+      author: 'Robert C. Martin',
+      likes: 0
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(400)
+  })
 })
 
-test('the unique identifier property is named id instead of _id', async () => {
-  const response = await api.get('/api/blogs')
-  const contents = response.body
-  contents.forEach(blog => expect(blog.id).toBeDefined())
+describe('checking if the property', () => {
+  test('unique identifier is named id instead of _id', async () => {
+    const response = await api.get('/api/blogs')
+    const contents = response.body
+    contents.forEach(blog => expect(blog.id).toBeDefined())
+  })
+
+  test('"likes" when missing defaults to zero', async () => {
+    const newBlog = {
+      title: 'First class tests',
+      author: 'Robert C. Martin',
+      url: 'http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.html'
+    }
+
+    const resultBlog = await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+
+    expect(resultBlog.body.likes).toBe(0)
+  })
 })
 
-test('a valid blog can be added', async () => {
-  const newBlog = {
-    title: 'Canonical string reduction',
-    author: 'Edsger W. Dijkstra',
-    url: 'http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html',
-    likes: 12
-  }
+describe('deletion of a blog', () => {
+  test('succeeds with status code 204 if id is valid', async () => {
+    const blogsAtStart = await api.get('/api/blogs')
+    const blogToDelete = blogsAtStart.body[0]
+    // console.log(blogToDelete)
 
-  await api
-    .post('/api/blogs')
-    .send(newBlog)
-    .expect(200)
-    .expect('Content-Type', /application\/json/)
+    await api
+      .delete(`/api/blogs/${blogToDelete.id}`)
+      .expect(204)
 
-  const response = await api.get('/api/blogs')
-  const titles = response.body.map(blog => blog.title)
+    const blogsAtEnd = await api.get('/api/blogs')
+    expect(blogsAtEnd.body.length).toBe(blogsAtStart.body.length - 1)
 
-  expect(response.body.length).toBe(initialBlogs.length + 1)
-  expect(titles).toContain('Canonical string reduction')
-})
-
-test('if the property "likes" is missing, default to zero', async () => {
-  const newBlog = {
-    title: 'First class tests',
-    author: 'Robert C. Martin',
-    url: 'http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.html'
-  }
-
-  const resultBlog = await api
-    .post('/api/blogs')
-    .send(newBlog)
-    .expect(200)
-    .expect('Content-Type', /application\/json/)
-
-  expect(resultBlog.body.likes).toBe(0)
-})
-
-test('backend responds with status code 400, if "title" and "url" are missing', async () => {
-  const newBlog = {
-    author: 'Robert C. Martin',
-    likes: 0
-  }
-
-  await api
-    .post('/api/blogs')
-    .send(newBlog)
-    .expect(400)
+    expect(blogsAtEnd.body).not.toContain(blogToDelete.url)
+  })
 })
 
 afterAll(() => {
