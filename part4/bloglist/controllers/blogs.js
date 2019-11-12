@@ -42,7 +42,7 @@ blogsRouter.post('/', async (request, response, next) => {
 
 // PUT
 
-blogsRouter.put('/:id', (request, response, next) => {
+blogsRouter.put('/:id', async (request, response, next) => {
   const { title, author, url, likes } = request.body
 
   const blog = {
@@ -52,11 +52,13 @@ blogsRouter.put('/:id', (request, response, next) => {
     likes: likes || 0
   }
 
-  Blog
-    .findByIdAndUpdate(request.params.id, blog, { new: true })
-    .then(updatedBlog => updatedBlog.toJSON())
-    .then(updatedAndFormattedBlog => response.json(updatedAndFormattedBlog))
-    .catch(error => next(error))
+  try {
+    const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
+    response.json(updatedBlog.toJSON())
+  }
+  catch (exception) {
+    next(exception)
+  }
 })
 
 // DELETE

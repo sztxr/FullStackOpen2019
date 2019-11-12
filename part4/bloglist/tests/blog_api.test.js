@@ -117,6 +117,34 @@ describe('deletion of a blog', () => {
   })
 })
 
+describe('updating a blog', () => {
+  test('succeeds with status code 200 if id is valid', async () => {
+    const blogsAtStart = await api.get('/api/blogs')
+    const blogToUpdate = blogsAtStart.body[0]
+
+    const newContent = {
+      title: 'React patterns',
+      author: 'Michael Chan',
+      url: 'https://reactpatterns.com/',
+      likes: 42
+    }
+
+    await api
+      .put(`/api/blogs/${blogToUpdate.id}`)
+      .send(newContent)
+      .expect(200)
+
+    const blogsAtEnd = await api.get('/api/blogs')
+    expect(blogsAtEnd.body.length).toBe(blogsAtStart.body.length)
+
+    expect(blogsAtEnd.body).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining(newContent)
+      ])
+    )
+  })
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })
