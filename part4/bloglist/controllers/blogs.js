@@ -8,37 +8,36 @@ blogsRouter.get('/', async (request, response) => {
   response.json(blogs.map(item => item.toJSON()))
 })
 
-blogsRouter.get('/:id', (request, response, next) => {
-  Blog
-    .findById(request.params.id)
-    .then(item => {
-      if (item) response.json(item.toJSON())
-      else response.status(404).end()
-    })
-    .catch(error => next(error))
+blogsRouter.get('/:id', async (request, response, next) => {
+  try {
+    const blog = await Blog.findById(request.params.id)
+    if (blog) response.json(blog.toJSON())
+    else response.status(404).end()
+  }
+  catch (exception) {
+    next(exception)
+  }
 })
 
 // POST
 
-blogsRouter.post('/', (request, response, next) => {
+blogsRouter.post('/', async (request, response, next) => {
   const { title, author, url, likes } = request.body
 
-  // if (!title || !author || !url) {
-  //   return response.status(400).json({ error: 'content missing' })
-  // }
-
-  const blog = new Blog ({
+  const blog = new Blog({
     title: title,
     author: author,
     url: url,
     likes: likes || 0
   })
 
-  blog
-    .save()
-    .then(savedBlog => savedBlog.toJSON())
-    .then(savedAndFormattedBlog => response.json(savedAndFormattedBlog))
-    .catch(error => next(error))
+  try {
+    const savedBlog = await blog.save()
+    response.json(savedBlog.toJSON())
+  }
+  catch (exception) {
+    next(exception)
+  }
 })
 
 // PUT
@@ -62,14 +61,14 @@ blogsRouter.put('/:id', (request, response, next) => {
 
 // DELETE
 
-blogsRouter.delete('/:id', (request, response, next) => {
-  Blog
-    .findByIdAndRemove(request.params.id)
-    .then(result => {
-      console.log(result)
-      response.status(204).end()
-    })
-    .catch(error => next(error))
+blogsRouter.delete('/:id', async (request, response, next) => {
+  try {
+    await Blog.findByIdAndRemove(request.params.id)
+    response.status(204).end() // 204 No Content
+  }
+  catch (exception) {
+    next(exception)
+  }
 })
 
 module.exports = blogsRouter
