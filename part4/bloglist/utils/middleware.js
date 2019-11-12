@@ -1,4 +1,5 @@
 const morgan = require('morgan')
+const logger = require('./logger')
 
 // request logger
 morgan.token('body', request => JSON.stringify(request.body))
@@ -10,7 +11,7 @@ const unknownEndpoint = (request, response) => {
 
 // handler of requests with result to errors
 const errorHandler = (error, request, response, next) => {
-  console.error(error.message)
+  logger.error(error.message)
 
   if (error.name === 'CastError' && error.kind === 'ObjectId') {
     return response.status(400).send({ error: 'malformed id' })
