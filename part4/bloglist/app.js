@@ -9,7 +9,7 @@ const mongoose = require('mongoose')
 
 console.log('connecting to', config.MONGODB_URI)
 
-// mongoose.set('useFindAndModify', false)
+mongoose.set('useFindAndModify', false)
 mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
     console.log('connected to MongoDB')
