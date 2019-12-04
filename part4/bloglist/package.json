@@ -8,7 +8,8 @@
     "watch": "NODE_ENV=development nodemon index.js",
     "lint": "eslint . || exit 0",
     "test": "NODE_ENV=test jest --verbose --runInBand",
-    "test:api": "npx jest tests/blog_api.test.js --runInBand"
+    "test:api": "npx jest tests/blog_api.test.js --runInBand",
+    "test:user": "npx jest tests/user_api.test.js --runInBand"
   },
   "author": "sztxr",
   "license": "ISC",
