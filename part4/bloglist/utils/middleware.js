@@ -34,8 +34,7 @@ const getTokenFrom = request => {
 }
 
 const tokenExtractor = (request, response, next) => {
-  const token = getTokenFrom(request)
-  if (token) request.token = token
+  request.token = getTokenFrom(request)
   next()
 }
 
