@@ -20,14 +20,14 @@ function App() {
   }, [])
 
   // get user details from local storage
-  // useEffect(() => {
-  //   const loggedUserJSON = window.localStorage.getItem('loggedNoteAppUser')
-  //   if (loggedUserJSON) {
-  //     const user = JSON.parse(loggedUserJSON)
-  //     setUser(user)
-  //     blogService.setToken(user.token)
-  //   }
-  // }, [])
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('loggedUser')
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+      blogService.setToken(user.token)
+    }
+  }, [])
 
   const handleLogin = async e => {
     e.preventDefault()
@@ -38,6 +38,12 @@ function App() {
         username, password
       })
 
+      window.localStorage.setItem(
+        'loggedUser', JSON.stringify(user)
+      )
+      console.log(window.localStorage)
+
+      blogService.setToken(user.token)
       setUser(user)
       setUsername('')
       setPassword('')
@@ -45,6 +51,11 @@ function App() {
     catch (exception) {
       console.log('Invalid credentials')
     }
+  }
+
+  const handleLogout = async () => {
+    window.localStorage.removeItem('loggedUser')
+    setUser(null)
   }
 
   const renderItems = () => blogs.map((blog, i) =>
@@ -73,7 +84,10 @@ function App() {
     <div>
       <h1>Blogs</h1>
 
-      <p>{user.name} logged in</p>
+      <div>
+        {user.name} logged in
+        <button onClick={handleLogout}>logout</button>
+      </div>
       <ul>
         {renderItems()}
       </ul>
