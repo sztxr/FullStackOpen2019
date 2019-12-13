@@ -2,6 +2,7 @@ import React from 'react'
 
 const LoginForm = (props) => {
   const { handleLogin, username, password, setUsername, setPassword } = props
+  
   return (
     <form onSubmit={handleLogin}>
       <div>
@@ -9,16 +10,14 @@ const LoginForm = (props) => {
         <input
           type="text"
           value={username}
-          name="Username"
           onChange={setUsername}
         />
       </div>
       <div>
         password
         <input
-          type="text"
+          type="password"
           value={password}
-          name="Password"
           onChange={setPassword}
         />
       </div>

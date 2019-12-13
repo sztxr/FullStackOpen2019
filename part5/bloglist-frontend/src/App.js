@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import loginService from './services/login'
 import blogService from './services/blogs'
+import { useInput } from './hooks/useInput'
 import LoginForm from './components/LoginForm'
+import BlogForm from './components/BlogForm'
 import Blog from './components/Blog'
 
 function App() {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const [title, titleInput] = useInput({ type: 'text' })
+  const [author, authorInput] = useInput({ type: 'text' })
+  const [url, urlInput] = useInput({ type: 'text' })
   const [user, setUser] = useState(null)
 
   // get all blogs
@@ -41,7 +46,6 @@ function App() {
       window.localStorage.setItem(
         'loggedUser', JSON.stringify(user)
       )
-      console.log(window.localStorage)
 
       blogService.setToken(user.token)
       setUser(user)
@@ -56,6 +60,22 @@ function App() {
   const handleLogout = async () => {
     window.localStorage.removeItem('loggedUser')
     setUser(null)
+  }
+
+  const addNewBlog = async e => {
+    try {
+      e.preventDefault()
+      const blogObject = {
+        title, author, url
+      }
+
+      const response = await blogService.create(blogObject)
+      // console.log(response)
+      setBlogs(blogs.concat(response))
+    }
+    catch (exception) {
+      console.log('error adding a new blog')
+    }
   }
 
   const renderItems = () => blogs.map((blog, i) =>
@@ -88,6 +108,15 @@ function App() {
         {user.name} logged in
         <button onClick={handleLogout}>logout</button>
       </div>
+
+      <h2>Add new blog</h2>
+      <BlogForm
+        addNewBlog={addNewBlog}
+        titleInput={titleInput}
+        authorInput={authorInput}
+        urlInput={urlInput}
+      />
+
       <ul>
         {renderItems()}
       </ul>
