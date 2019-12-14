@@ -16,7 +16,7 @@ const BlogForm = (props) => {
       <div>
         URL: {urlInput}
       </div>
-      <button type="submit">Add</button>
+      <button type="submit" className="btn btn-primary">Add</button>
     </form>
   )
 }

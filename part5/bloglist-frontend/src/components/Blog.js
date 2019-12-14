@@ -2,7 +2,7 @@ import React from 'react'
 
 const Blog = ({ blog }) => (
   <li>
-    {blog.title}. {blog.author}
+    <strong>{blog.title}.</strong> {blog.author}
   </li>
 )
 

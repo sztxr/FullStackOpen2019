@@ -21,7 +21,7 @@ const LoginForm = (props) => {
           onChange={setPassword}
         />
       </div>
-      <button type="submit">Login</button>
+      <button type="submit" className="btn btn-primary">Login</button>
     </form>
   )
 }
