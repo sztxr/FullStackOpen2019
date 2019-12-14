@@ -5,15 +5,17 @@ import { useInput } from './hooks/useInput'
 import LoginForm from './components/LoginForm'
 import BlogForm from './components/BlogForm'
 import Blog from './components/Blog'
+import Notification from './components/Notification'
 
 function App() {
   const [blogs, setBlogs] = useState([])
+  const [user, setUser] = useState(null)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [title, titleInput] = useInput({ type: 'text' })
   const [author, authorInput] = useInput({ type: 'text' })
   const [url, urlInput] = useInput({ type: 'text' })
-  const [user, setUser] = useState(null)
+  const [notification, setNotification] = useState({ message: null })
 
   // get all blogs
   useEffect(() => {
@@ -34,6 +36,13 @@ function App() {
     }
   }, [])
 
+  const showNotification = (message, type = 'success') => {
+    setNotification({ message, type })
+    setTimeout(() => {
+      setNotification({ message: null })
+    }, 5000)
+  }
+
   const handleLogin = async e => {
     e.preventDefault()
     // console.log('logging in with', username, password)
@@ -53,7 +62,7 @@ function App() {
       setPassword('')
     }
     catch (exception) {
-      console.log('Invalid credentials')
+      showNotification(`Invalid username or password`, 'error')
     }
   }
 
@@ -71,10 +80,14 @@ function App() {
 
       const response = await blogService.create(blogObject)
       // console.log(response)
+      console.log(titleInput)
+      // titleInput.props.setValue = ''
       setBlogs(blogs.concat(response))
+      showNotification(`New blog added: ${blogObject.title} by ${blogObject.author}`, 'success')
     }
     catch (exception) {
-      console.log('error adding a new blog')
+      console.log(exception)
+      showNotification(`Invalid formatting`, 'error')
     }
   }
 
@@ -89,6 +102,9 @@ function App() {
     return (
       <div>
         <h2>Log in to application</h2>
+
+        <Notification notification={notification} />
+
         <LoginForm
           handleLogin={handleLogin}
           username={username}
@@ -106,8 +122,10 @@ function App() {
 
       <div>
         {user.name} logged in
-        <button onClick={handleLogout}>logout</button>
+        <button onClick={handleLogout} className="btn btn-secondary">logout</button>
       </div>
+
+      <Notification notification={notification} />
 
       <h2>Add new blog</h2>
       <BlogForm
