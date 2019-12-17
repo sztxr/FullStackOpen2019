@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 
-const Blog = ({ blog, updateLikes, deleteBlog }) => {
+const Blog = ({ blog, user, updateLikes, deleteBlog }) => {
   const [expand, setExpand] = useState(false)
+  console.log('blog', blog.user)
+  console.log('user', user)
 
   const handleLikeClick = e => {
     // stop div from closing
@@ -35,7 +37,9 @@ const Blog = ({ blog, updateLikes, deleteBlog }) => {
             </button>
           </li>
           {blog.user && <li>added by: {blog.user.name}</li>}
-          <button className="btn btn-delete" onClick={handleDelete}>Delete</button>
+          {blog.user && (user.username === blog.user.username) ?
+            <button className="btn btn-delete" onClick={handleDelete}>Delete</button>
+          : null}
         </ul>
       ) : null}
     </li>
