@@ -110,11 +110,24 @@ function App() {
     }
   }
 
+  const handleLikeClick = async blogToUpdate => {
+    try {
+      const response = await blogService.update(blogToUpdate)
+      const updatedBlogList = blogs.map(blog => {
+        return blog.id === response.id ? response : blog
+      })
+      setBlogs(updatedBlogList)
+    }
+    catch (exception) {
+      console.log(exception)
+    }
+  }
+
   const renderItems = () => blogs.map((blog, i) =>
     <Blog
       key={i}
       blog={blog}
-      user={user}
+      handleClick={handleLikeClick}
     />
   )
 
