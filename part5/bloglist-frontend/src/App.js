@@ -98,9 +98,6 @@ function App() {
       }
 
       const response = await blogService.create(blogObject)
-      // console.log(response)
-      console.log(titleInput)
-      // titleInput.props.setValue = ''
       setBlogs(blogs.concat(response))
       showNotification(`New blog added: ${blogObject.title} by ${blogObject.author}`, 'success')
     }
@@ -110,7 +107,7 @@ function App() {
     }
   }
 
-  const handleLikeClick = async blogToUpdate => {
+  const updateLikes = async blogToUpdate => {
     try {
       const response = await blogService.update(blogToUpdate)
       const updatedBlogList = blogs.map(blog => {
@@ -123,11 +120,25 @@ function App() {
     }
   }
 
+  const deleteBlog = async blogToDelete => {
+    try {
+      const response = await blogService.remove(blogToDelete)
+      const updatedBlogList = blogs.filter(blog => blog.id !== response.id)
+      setBlogs(updatedBlogList)
+      showNotification(`Blog: '${blogToDelete.title} by ${blogToDelete.author}' has been deleted`, 'success')
+    }
+    catch (exception) {
+      console.log(exception)
+      showNotification(`Couldn't delete blog`, 'error')
+    }
+  }
+
   const renderItems = () => blogs.map((blog, i) =>
     <Blog
       key={i}
       blog={blog}
-      handleClick={handleLikeClick}
+      updateLikes={updateLikes}
+      deleteBlog={deleteBlog}
     />
   )
 

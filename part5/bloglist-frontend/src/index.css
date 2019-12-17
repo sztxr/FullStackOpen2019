@@ -3,6 +3,7 @@
   --primary-color: #15202b;
   --accent-color-primary: rgb(88, 167, 174);
   --accent-color-secondary: rgb(37, 70, 73);
+  --color-warning: rgb(124, 54, 54);
   --text-color: rgb(0, 40, 44);
 }
 
@@ -81,6 +82,15 @@ input {
 
   font-size: 15px;
   line-height: 25px;
+}
+
+.btn-delete {
+  --btn-color: var(--color-warning);
+  box-shadow: none;
+  
+  padding: 4px 5px;
+
+  font-size: 9px;
 }
 
 .blogForm-container {

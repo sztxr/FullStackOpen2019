@@ -1,17 +1,25 @@
 import React, { useState } from 'react'
 
-const Blog = ({ blog, handleClick }) => {
+const Blog = ({ blog, updateLikes, deleteBlog }) => {
   const [expand, setExpand] = useState(false)
 
-  const updateLikes = e => {
+  const handleLikeClick = e => {
     // stop div from closing
     e.stopPropagation()
-    
+
     // update likes on database
-    handleClick({
+    updateLikes({
       ...blog,
       likes: blog.likes + 1
     })
+  }
+
+  const handleDelete = e => {
+    e.stopPropagation()
+    if (window.confirm(`Delete: '${blog.title} by ${blog.author}'?`)) {
+      deleteBlog(blog)
+      setExpand(false)
+    }
   }
 
   return (
@@ -22,11 +30,12 @@ const Blog = ({ blog, handleClick }) => {
           <li>url: <a href={blog.url}>{blog.url}</a></li>
           <li>
             likes: {blog.likes}
-            <button className="btn btn-like" onClick={updateLikes}>
+            <button className="btn btn-like" onClick={handleLikeClick}>
               <span role="img" aria-label="like">&#128077;</span>
             </button>
           </li>
-          <li>added by: {blog.user && blog.user.name}</li>
+          {blog.user && <li>added by: {blog.user.name}</li>}
+          <button className="btn btn-delete" onClick={handleDelete}>Delete</button>
         </ul>
       ) : null}
     </li>
