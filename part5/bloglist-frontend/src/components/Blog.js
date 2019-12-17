@@ -2,8 +2,6 @@ import React, { useState } from 'react'
 
 const Blog = ({ blog, user, updateLikes, deleteBlog }) => {
   const [expand, setExpand] = useState(false)
-  console.log('blog', blog.user)
-  console.log('user', user)
 
   const handleLikeClick = e => {
     // stop div from closing
