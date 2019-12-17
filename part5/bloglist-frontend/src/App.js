@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'
 import loginService from './services/login'
 import blogService from './services/blogs'
 import { useInput } from './hooks/useInput'
@@ -21,10 +21,10 @@ function App() {
   // get all blogs
   useEffect(() => {
     const getBlogs = async () => {
-      const blogs = await blogService.getAll();
+      const blogs = await blogService.getAll()
       setBlogs(blogs.sort((a, b) => b.likes - a.likes))
     }
-    getBlogs();
+    getBlogs()
   }, [])
 
   // get user details from local storage
@@ -63,7 +63,7 @@ function App() {
       setPassword('')
     }
     catch (exception) {
-      showNotification(`Invalid username or password`, 'error')
+      showNotification('Invalid username or password', 'error')
     }
   }
 
@@ -103,7 +103,7 @@ function App() {
     }
     catch (exception) {
       console.log(exception)
-      showNotification(`Invalid formatting`, 'error')
+      showNotification('Invalid formatting', 'error')
     }
   }
 
@@ -129,7 +129,7 @@ function App() {
     }
     catch (exception) {
       console.log(exception)
-      showNotification(`Couldn't delete blog`, 'error')
+      showNotification('Couldn\'t delete blog', 'error')
     }
   }
 
@@ -178,7 +178,7 @@ function App() {
         {renderItems()}
       </ul>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App

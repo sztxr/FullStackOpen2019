@@ -37,7 +37,7 @@ const Blog = ({ blog, user, updateLikes, deleteBlog }) => {
           {blog.user && <li>added by: {blog.user.name}</li>}
           {blog.user && (user.username === blog.user.username) ?
             <button className="btn btn-delete" onClick={handleDelete}>Delete</button>
-          : null}
+            : null}
         </ul>
       ) : null}
     </li>
