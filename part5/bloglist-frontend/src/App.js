@@ -114,6 +114,7 @@ function App() {
     <Blog
       key={i}
       blog={blog}
+      user={user}
     />
   )
 

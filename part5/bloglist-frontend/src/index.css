@@ -35,7 +35,6 @@ input {
 }
 
 .btn {
-  box-shadow: none;
   border: unset;
   outline: none;
 
@@ -71,6 +70,17 @@ input {
   --btn-color: var(--accent-color-secondary);
   --btn-shadow: rgb(9, 44, 47);
   margin-left: 5px;
+}
+
+.btn-like {
+  --btn-color: var(--accent-color-primary);
+  box-shadow: none;
+  
+  margin-left: 5px;
+  padding: 0 5px;
+
+  font-size: 15px;
+  line-height: 25px;
 }
 
 .blogForm-container {
