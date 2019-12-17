@@ -6,6 +6,7 @@ import LoginForm from './components/LoginForm'
 import BlogForm from './components/BlogForm'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
+import Togglable from './components/Togglable'
 
 function App() {
   const [blogs, setBlogs] = useState([])
@@ -71,9 +72,27 @@ function App() {
     setUser(null)
   }
 
+  const blogFormRef = React.createRef()
+
+  const blogForm = () => (
+    <Togglable
+      buttonLabel='Add a new blog'
+      classType='blogForm'
+      ref={blogFormRef}
+    >
+      <BlogForm
+        handleSubmit={addNewBlog}
+        titleInput={titleInput}
+        authorInput={authorInput}
+        urlInput={urlInput}
+      />
+    </Togglable>
+  )
+
   const addNewBlog = async e => {
     try {
       e.preventDefault()
+      blogFormRef.current.toggleVisibility()
       const blogObject = {
         title, author, url
       }
@@ -127,13 +146,7 @@ function App() {
 
       <Notification notification={notification} />
 
-      <h2>Add new blog</h2>
-      <BlogForm
-        addNewBlog={addNewBlog}
-        titleInput={titleInput}
-        authorInput={authorInput}
-        urlInput={urlInput}
-      />
+      {blogForm()}
 
       <ul>
         {renderItems()}

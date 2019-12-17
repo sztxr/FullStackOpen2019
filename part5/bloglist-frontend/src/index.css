@@ -1,6 +1,6 @@
 :root {
   --margin: 20px;
-  --primary-color: #15202B;
+  --primary-color: #15202b;
   --accent-color-primary: rgb(88, 167, 174);
   --accent-color-secondary: rgb(37, 70, 73);
   --text-color: rgb(0, 40, 44);
@@ -12,6 +12,17 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: var(--text-color);
+}
+
+input {
+  box-shadow: none;
+  outline: none;
+  border: 1px solid rgb(122, 142, 144);
+  border-radius: 3px;
+  background-color: rgb(232, 240, 254);
+
+  padding: 5px;
+  margin: 1px 0;
 }
 
 .notification {
@@ -27,7 +38,7 @@ body {
   box-shadow: none;
   border: unset;
   outline: none;
-  
+
   background-color: var(--btn-color);
   box-shadow: 0px 4px 0px var(--btn-shadow);
   border-radius: 5px;
@@ -52,7 +63,7 @@ body {
 
 .btn-primary {
   --btn-color: var(--accent-color-primary);
-  --btn-shadow:  rgb(23, 115, 124);
+  --btn-shadow: rgb(23, 115, 124);
   margin: 5px 0;
 }
 
@@ -60,4 +71,18 @@ body {
   --btn-color: var(--accent-color-secondary);
   --btn-shadow: rgb(9, 44, 47);
   margin-left: 5px;
+}
+
+.blogForm-container {
+  border: 2px dashed var(--accent-color-secondary);
+  margin: 10px 0;
+  padding: 15px;
+}
+
+.blogForm-container h2 {
+  margin-top: 0;
+}
+
+.blogForm-container .btn-secondary {
+  margin-left: 0;
 }
