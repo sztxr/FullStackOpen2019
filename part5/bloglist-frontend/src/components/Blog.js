@@ -23,7 +23,7 @@ const Blog = ({ blog, user, updateLikes, deleteBlog }) => {
   }
 
   return (
-    <li onClick={() => setExpand(!expand)}>
+    <li onClick={() => setExpand(!expand)} className="blogInfo">
       <strong>{blog.title}.</strong> {blog.author}
       {expand ? (
         <ul>
