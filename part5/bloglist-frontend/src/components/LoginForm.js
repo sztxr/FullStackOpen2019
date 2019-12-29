@@ -5,7 +5,7 @@ const LoginForm = (props) => {
   const { handleLogin, username, password, setUsername, setPassword } = props
 
   return (
-    <form onSubmit={handleLogin}>
+    <form onSubmit={handleLogin} className="loginForm">
       <div>
         username
         <input
