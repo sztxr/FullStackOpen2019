@@ -4,6 +4,7 @@ import Blog from '../components/Blog'
 
 describe('<Blog />', () => {
   let component
+  const mockHandler = jest.fn()
 
   const blog = {
     title: 'Mock Blog',
@@ -25,8 +26,8 @@ describe('<Blog />', () => {
       <Blog
         blog={blog}
         user={user}
-        updateLikes={() => {}}
-        deleteBlog={() => {}}
+        updateLikes={mockHandler}
+        deleteBlog={mockHandler}
       />
     )
   })

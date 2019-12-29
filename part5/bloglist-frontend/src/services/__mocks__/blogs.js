@@ -25,4 +25,6 @@ const getAll = () => {
   return Promise.resolve(blogs)
 }
 
-export default { getAll }
+const setToken = () => {}
+
+export default { getAll, setToken }

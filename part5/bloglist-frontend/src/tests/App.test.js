@@ -3,8 +3,13 @@ import { render, waitForElement } from '@testing-library/react'
 import App from '../App'
 
 describe('<App />', () => {
+  let component
+
+  beforeEach(() => {
+    component = render(<App />)
+  })
+
   test('if no user logged, blogs are not rendered', async () => {
-    const component = render(<App />)
     component.rerender(<App />)
 
     await waitForElement(
@@ -15,6 +20,7 @@ describe('<App />', () => {
     expect(heading).toHaveTextContent('Log in to application')
   })
 
+  // not working
   test('if use is logged, blogs are rendered', async () => {
     const user = {
       username: 'tester',
@@ -22,9 +28,8 @@ describe('<App />', () => {
       name: 'App Tester'
     }
 
-    localStorage.setItem('loggedBlogAppUser', JSON.stringify(user))
+    localStorage.setItem('loggedUser', JSON.stringify(user))
 
-    const component = render(<App />)
     component.rerender(<App />)
 
     await waitForElement(
