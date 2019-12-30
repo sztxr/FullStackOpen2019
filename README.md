@@ -1,7 +1,7 @@
 # Full Stack Open 2019
 This repository contains my submissions for the course Full Stack Open 2019.
 
-# Answers to different parts of the course can be found as follows:
+## Answers to different parts of the course can be found as follows:
 - [**part0**](https://github.com/sztxr/FullStackOpen2019/tree/master/part0) &mdash; Fundamentals of Web apps
 
 - [**part1**](https://github.com/sztxr/FullStackOpen2019/tree/master/part1) &mdash; Introduction to React
@@ -24,3 +24,7 @@ This repository contains my submissions for the course Full Stack Open 2019.
   - [bloglist-backend](https://github.com/sztxr/FullStackOpen2019/tree/master/part5/bloglist-backend) (copy of part4)
   - [bloglist-frontend](https://github.com/sztxr/FullStackOpen2019/tree/master/part5/bloglist-frontend)
   - [custom-hooks](https://github.com/sztxr/FullStackOpen2019/tree/master/part5/custom-hooks)
+
+- [**part6**](https://github.com/sztxr/FullStackOpen2019/tree/master/part6) &mdash; Testing React apps, custom hooks
+  - [unicafe-redux](https://github.com/sztxr/FullStackOpen2019/tree/master/part6/unicafe-redux)
+  - [redux-anecdotes](https://github.com/sztxr/FullStackOpen2019/tree/master/part6/redux-anecdotes)
