@@ -3,8 +3,11 @@ import React from 'react'
 const App = (props) => {
   const anecdotes = props.store.getState()
 
-  const vote = (id) => {
-    console.log('vote', id)
+  const vote = id => () => {
+    props.store.dispatch({
+      type: 'VOTE',
+      data: { id }
+    })
   }
 
   return (
@@ -17,8 +20,9 @@ const App = (props) => {
           </div>
           <div>
             has {anecdote.votes}
-            <button onClick={() => vote(anecdote.id)}>vote</button>
+            <button onClick={vote(anecdote.id)}>vote</button>
           </div>
+          <br />
         </div>
       )}
       <h2>create new</h2>
