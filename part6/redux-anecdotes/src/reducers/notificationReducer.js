@@ -25,9 +25,9 @@ export const clearNotification = () => {
   }
 }
 
-export const setTimedNotification = (message, store) => {
-  store.dispatch(setNotification(message))
-  setTimeout(() => {store.dispatch(clearNotification())}, 5000)
-}
+// export const setTimedNotification = (message, store) => {
+//   store.dispatch(setNotification(message))
+//   setTimeout(() => {store.dispatch(clearNotification())}, 5000)
+// }
 
 export default notificationReducer
