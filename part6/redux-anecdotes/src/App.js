@@ -9,8 +9,7 @@ import { initializeAnecdotes } from './reducers/anecdoteReducer'
 
 const App = (props) => {
   useEffect(() => {
-    anecdoteService
-      .getAll().then(anecdotes => props.initializeAnecdotes(anecdotes))
+    props.initializeAnecdotes()
   })
 
   return (
@@ -19,7 +18,7 @@ const App = (props) => {
       <Notification />
       <Filter />
       <AnecdoteForm />
-      <br/>
+      <br />
       <AnecdoteList />
     </div>
   )
