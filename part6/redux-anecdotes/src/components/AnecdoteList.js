@@ -3,7 +3,7 @@ import { voteAnecdote } from '../reducers/anecdoteReducer'
 import { setTimedNotification } from '../reducers/notificationReducer'
 
 const AnecdoteList = ({ store }) => {
-  const { anecdotes } = store.getState()
+  const { anecdotes, filter: filterValue } = store.getState()
 
   const sortAnecdotes = anecdotes => anecdotes.sort((a, b) => b.votes - a.votes)
 
@@ -12,10 +12,14 @@ const AnecdoteList = ({ store }) => {
     setTimedNotification(`You voted: "${anecdote.content}"`, store)
   }
 
+  const filteredAnecdotes = anecdotes.filter(anecdote =>
+    anecdote.content.toLowerCase().includes(filterValue.toLowerCase())
+  )
+
   return (
     <>
       {
-        sortAnecdotes(anecdotes).map(anecdote =>
+        sortAnecdotes(filteredAnecdotes).map(anecdote =>
           <div key={anecdote.id}>
             <div>
               {anecdote.content}
