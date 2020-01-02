@@ -8,6 +8,7 @@ import Footer from './components/Footer'
 import About from './components/About'
 import CreateNew from './components/CreateNew'
 import AnecdoteList from './components/AnecdoteList'
+import Anecdote from './components/Anecdote'
 
 const App = () => {
   const [anecdotes, setAnecdotes] = useState([
@@ -55,6 +56,9 @@ const App = () => {
         <div>
           <Menu />
           <Route exact path='/' render={() => <AnecdoteList anecdotes={anecdotes} />} />
+          <Route exact path='/anecdotes/:id' render={({ match }) =>
+            <Anecdote anecdote={anecdoteById(match.params.id)} />
+          } />
           <Route exact path='/about' render={() => <About />} />
           <Route exact path='/create' render={() => <CreateNew addNew={addNew} />} />
         </div>
