@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
+import { withRouter } from 'react-router-dom'
 
-const CreateNew = (props) => {
+let CreateNew = (props) => {
   const [content, setContent] = useState('')
   const [author, setAuthor] = useState('')
   const [info, setInfo] = useState('')
-
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -14,6 +14,7 @@ const CreateNew = (props) => {
       info,
       votes: 0
     })
+    props.history.push('/')
   }
 
   return (
@@ -37,5 +38,7 @@ const CreateNew = (props) => {
     </div>
   )
 }
+
+CreateNew = withRouter(CreateNew)
 
 export default CreateNew
