@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react'
+import { connect } from 'react-redux'
 import loginService from './services/login'
 import blogService from './services/blogs'
-// import { useInput } from './hooks/useInput'
 import LoginForm from './components/LoginForm'
 import BlogForm from './components/BlogForm'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import { useField } from './hooks'
+import { setNotification } from './reducers/notificationReducer'
 
-function App() {
+const App = (props) => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
   const username = useField('text')
@@ -17,7 +18,7 @@ function App() {
   const title = useField('text')
   const author = useField('text')
   const url = useField('url')
-  const [notification, setNotification] = useState({ message: null })
+  // const [notification, setNotification] = useState({ message: null })
 
   // get all blogs
   useEffect(() => {
@@ -38,12 +39,12 @@ function App() {
     }
   }, [])
 
-  const showNotification = (message, type = 'success') => {
-    setNotification({ message, type })
-    setTimeout(() => {
-      setNotification({ message: null })
-    }, 5000)
-  }
+  // const showNotification = (message, type = 'success') => {
+  //   setNotification({ message, type })
+  //   setTimeout(() => {
+  //     setNotification({ message: null })
+  //   }, 5000)
+  // }
 
   const handleLogin = async e => {
     e.preventDefault()
@@ -64,7 +65,8 @@ function App() {
       password.reset('')
     }
     catch (exception) {
-      showNotification('Invalid username or password', 'error')
+      // showNotification('Invalid username or password', 'error')
+      props.setNotification('Invalid username or password', 'error', 5)
     }
   }
 
@@ -105,11 +107,13 @@ function App() {
       title.reset()
       author.reset()
       url.reset()
-      showNotification(`New blog added: ${blogObject.title} by ${blogObject.author}`, 'success')
+      // showNotification(`New blog added: ${blogObject.title} by ${blogObject.author}`, 'success')
+      props.setNotification(`New blog added: ${blogObject.title} by ${blogObject.author}`, 'success', 5)
     }
     catch (exception) {
       console.log(exception)
-      showNotification('Invalid formatting', 'error')
+      // showNotification('Invalid formatting', 'error')
+      props.setNotification('Invalid formatting', 'error', 5)
     }
   }
 
@@ -131,11 +135,13 @@ function App() {
       const response = await blogService.remove(blogToDelete)
       const updatedBlogList = blogs.filter(blog => blog.id !== response.id)
       setBlogs(updatedBlogList)
-      showNotification(`Blog: '${blogToDelete.title} by ${blogToDelete.author}' has been deleted`, 'success')
+      // showNotification(`Blog: '${blogToDelete.title} by ${blogToDelete.author}' has been deleted`, 'success')
+      props.setNotification(`Blog: '${blogToDelete.title} by ${blogToDelete.author}' has been deleted`, 'success', 5)
     }
     catch (exception) {
       console.log(exception)
-      showNotification('Couldn\'t delete blog', 'error')
+      // showNotification('Couldn\'t delete blog', 'error')
+      props.setNotification('Couldn\'t delete blog', 'error', 5)
     }
   }
 
@@ -154,7 +160,7 @@ function App() {
       <div>
         <h2>Log in to application</h2>
 
-        <Notification notification={notification} />
+        <Notification />
 
         <LoginForm
           handleLogin={handleLogin}
@@ -174,7 +180,7 @@ function App() {
         <button onClick={handleLogout} className="btn btn-secondary">logout</button>
       </div>
 
-      <Notification notification={notification} />
+      <Notification />
 
       {blogForm()}
 
@@ -185,4 +191,4 @@ function App() {
   )
 }
 
-export default App
+export default connect(null, { setNotification })(App)
