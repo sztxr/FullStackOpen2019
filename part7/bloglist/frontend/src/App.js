@@ -9,6 +9,8 @@ import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import { useField } from './hooks'
 import { setNotification } from './reducers/notificationReducer'
+// import { initBlogs, createBlog, removeBlog } from './reducers/blogReducer'
+import { initBlogs  } from './reducers/blogReducer'
 
 const App = (props) => {
   const [blogs, setBlogs] = useState([])
@@ -18,15 +20,18 @@ const App = (props) => {
   const title = useField('text')
   const author = useField('text')
   const url = useField('url')
-  // const [notification, setNotification] = useState({ message: null })
 
   // get all blogs
+  // useEffect(() => {
+  //   const getBlogs = async () => {
+  //     const blogs = await blogService.getAll()
+  //     setBlogs(blogs.sort((a, b) => b.likes - a.likes))
+  //   }
+  //   getBlogs()
+  // }, [])
+
   useEffect(() => {
-    const getBlogs = async () => {
-      const blogs = await blogService.getAll()
-      setBlogs(blogs.sort((a, b) => b.likes - a.likes))
-    }
-    getBlogs()
+    props.initBlogs()
   }, [])
 
   // get user details from local storage
@@ -38,13 +43,6 @@ const App = (props) => {
       blogService.setToken(user.token)
     }
   }, [])
-
-  // const showNotification = (message, type = 'success') => {
-  //   setNotification({ message, type })
-  //   setTimeout(() => {
-  //     setNotification({ message: null })
-  //   }, 5000)
-  // }
 
   const handleLogin = async e => {
     e.preventDefault()
@@ -65,7 +63,6 @@ const App = (props) => {
       password.reset('')
     }
     catch (exception) {
-      // showNotification('Invalid username or password', 'error')
       props.setNotification('Invalid username or password', 'error', 5)
     }
   }
@@ -102,17 +99,16 @@ const App = (props) => {
         url: url.value
       }
 
+      // props.createBlog(blogObject)
       const response = await blogService.create(blogObject)
       setBlogs(blogs.concat(response))
       title.reset()
       author.reset()
       url.reset()
-      // showNotification(`New blog added: ${blogObject.title} by ${blogObject.author}`, 'success')
       props.setNotification(`New blog added: ${blogObject.title} by ${blogObject.author}`, 'success', 5)
     }
     catch (exception) {
       console.log(exception)
-      // showNotification('Invalid formatting', 'error')
       props.setNotification('Invalid formatting', 'error', 5)
     }
   }
@@ -135,19 +131,19 @@ const App = (props) => {
       const response = await blogService.remove(blogToDelete)
       const updatedBlogList = blogs.filter(blog => blog.id !== response.id)
       setBlogs(updatedBlogList)
-      // showNotification(`Blog: '${blogToDelete.title} by ${blogToDelete.author}' has been deleted`, 'success')
+      props.removeBlog(blogToDelete)
       props.setNotification(`Blog: '${blogToDelete.title} by ${blogToDelete.author}' has been deleted`, 'success', 5)
     }
     catch (exception) {
       console.log(exception)
-      // showNotification('Couldn\'t delete blog', 'error')
       props.setNotification('Couldn\'t delete blog', 'error', 5)
     }
   }
 
-  const renderItems = () => blogs.map((blog, i) =>
+  console.log(props)
+  const renderItems = () => props.blogs.map((blog) =>
     <Blog
-      key={i}
+      key={blog.id}
       blog={blog}
       user={user}
       updateLikes={updateLikes}
@@ -191,4 +187,15 @@ const App = (props) => {
   )
 }
 
-export default connect(null, { setNotification })(App)
+const mapStateToProps = (state) => {
+  return {
+    blogs: state.blogs
+  }
+}
+
+export default connect(mapStateToProps, {
+  setNotification,
+  initBlogs,
+  // createBlog,
+  // removeBlog
+})(App)

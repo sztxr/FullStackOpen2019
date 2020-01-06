@@ -29,9 +29,11 @@ This repository contains my submissions for the course Full Stack Open 2019.
   - [unicafe-redux](https://github.com/sztxr/FullStackOpen2019/tree/master/part6/unicafe-redux)
   - [redux-anecdotes](https://github.com/sztxr/FullStackOpen2019/tree/master/part6/redux-anecdotes)
 
-<!--
 - [**part7**](https://github.com/sztxr/FullStackOpen2019/tree/master/part7) &mdash; React router, styling app with CSS and webpack
-  - []()
+  - [routed-anecdotes](https://github.com/sztxr/FullStackOpen2019/tree/master/part7/routed-anecdotes)
+  - [bloglist]() (frontend + backend)
+
+<!--
 - [**part8**](https://github.com/sztxr/FullStackOpen2019/tree/master/part8) &mdash; GraphQL
   - []()
 -->
