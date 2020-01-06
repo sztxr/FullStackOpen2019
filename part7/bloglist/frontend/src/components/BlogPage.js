@@ -5,9 +5,9 @@ import { ButtonLike, ButtonDelete } from './styles/styles'
 
 const BlogPage = (props) => {
   const { blog, user, likeBlog, deleteBlog } = props
-  
+
   if (blog === undefined) return null
-  
+
   return (
     <div className="blogInfo">
       <h2>{blog.title}</h2>

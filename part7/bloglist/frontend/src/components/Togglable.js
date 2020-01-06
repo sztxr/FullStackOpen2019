@@ -3,10 +3,10 @@ import PropTypes from 'prop-types'
 import { Button, DashedContainer } from './styles/styles'
 
 const Togglable = React.forwardRef((props, ref) => {
+  Togglable.displayName = 'Togglable'
   const { buttonLabel, children } = props
-
   const [visible, setVisible] = useState(false)
-
+  
   const hideWhenVisible = { display: visible ? 'none' : '' }
   const showWhenVisible = { display: visible ? '' : 'none' }
 
