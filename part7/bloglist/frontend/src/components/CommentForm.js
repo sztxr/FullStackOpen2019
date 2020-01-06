@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { useField } from '../hooks'
 import { addComment } from '../reducers/blogReducer'
 import { setNotification } from '../reducers/notificationReducer'
+import { Button, Input } from './styles/styles'
 
 const CommentForm = (props) => {
   const comment = useField('text')
@@ -25,8 +26,8 @@ const CommentForm = (props) => {
   return (
     <form onSubmit={handleSubmit}>
       <div>
-        <input {...comment} reset={null} />
-        <button type="submit" className="btn btn-primary">add comment</button>
+        <Input {...comment} reset={null} />
+        <Button primary type="submit">add comment</Button>
       </div>
     </form>
   )

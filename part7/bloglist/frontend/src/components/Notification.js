@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { StyledNotification } from './styles/styles'
 
 const Notification = ({ notification }) => {
   // console.log(notification)
@@ -10,9 +11,9 @@ const Notification = ({ notification }) => {
   if (notification.message === null) return null
 
   return (
-    <div className='notification' style={style}>
+    <StyledNotification className='notification' style={style}>
       {notification.message}
-    </div>
+    </StyledNotification>
   )
 }
 

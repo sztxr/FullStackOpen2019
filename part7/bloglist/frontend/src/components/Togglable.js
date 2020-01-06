@@ -1,8 +1,9 @@
 import React, { useState, useImperativeHandle } from 'react'
 import PropTypes from 'prop-types'
+import { Button, DashedContainer } from './styles/styles'
 
 const Togglable = React.forwardRef((props, ref) => {
-  const { buttonLabel, classType, children } = props
+  const { buttonLabel, children } = props
 
   const [visible, setVisible] = useState(false)
 
@@ -16,15 +17,15 @@ const Togglable = React.forwardRef((props, ref) => {
   })
 
   return (
-    <div className={`${classType}-container`}>
+    <DashedContainer>
       <div style={hideWhenVisible}>
-        <button onClick={toggleVisibility} className="btn btn-primary">{buttonLabel}</button>
+        <Button primary onClick={toggleVisibility}>{buttonLabel}</Button>
       </div>
       <div style={showWhenVisible}>
         {children}
-        <button onClick={toggleVisibility} className="btn btn-secondary">Cancel</button>
+        <Button secondary onClick={toggleVisibility}>Cancel</Button>
       </div>
-    </div>
+    </DashedContainer>
   )
 })
 

@@ -146,7 +146,6 @@ const App = (props) => {
           <>
             <Togglable
               buttonLabel='Add a new blog'
-              classType='blogForm'
               ref={blogFormRef}
             >
               <BlogForm addBlog={addBlog} />

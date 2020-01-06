@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { Button, Input } from './styles/styles'
 
 const LoginForm = (props) => {
   const { handleLogin, username, password } = props
@@ -8,13 +9,13 @@ const LoginForm = (props) => {
     <form onSubmit={handleLogin} className="loginForm">
       <div>
         username
-        <input {...username} reset={null} />
+        <Input {...username} reset={null} />
       </div>
       <div>
         password
-        <input {...password} reset={null} />
+        <Input {...password} reset={null} />
       </div>
-      <button type="submit" className="btn btn-primary">Login</button>
+      <Button primary type="submit">Login</Button>
     </form>
   )
 }

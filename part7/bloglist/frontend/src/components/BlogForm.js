@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { useField } from '../hooks'
+import { Button, Input } from './styles/styles'
 
 const BlogForm = (props) => {
   const title = useField('text')
@@ -24,16 +25,16 @@ const BlogForm = (props) => {
       <h2>Add new blog</h2>
       <form onSubmit={handleSubmit}>
         <div>
-          Title: <input {...title} reset={null} />
+          Title: <Input {...title} reset={null} />
         </div>
 
         <div>
-          Author: <input {...author} reset={null} />
+          Author: <Input {...author} reset={null} />
         </div>
         <div>
-          URL: <input {...url} reset={null} />
+          URL: <Input {...url} reset={null} />
         </div>
-        <button type="submit" className="btn btn-primary">Add</button>
+        <Button primary type="submit">Add</Button>
       </form>
     </>
   )

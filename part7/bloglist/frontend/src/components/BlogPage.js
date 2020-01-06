@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import CommentForm from './CommentForm'
+import { ButtonLike, ButtonDelete } from './styles/styles'
 
 const BlogPage = (props) => {
   const { blog, user, likeBlog, deleteBlog } = props
@@ -14,13 +15,13 @@ const BlogPage = (props) => {
       <p>url: <a href={blog.url}>{blog.url}</a></p>
       <p>
         likes: {blog.likes}
-        <button className="btn btn-like" onClick={() => likeBlog(blog)}>
+        <ButtonLike onClick={() => likeBlog(blog)}>
           <span role="img" aria-label="like">&#128077;</span>
-        </button>
+        </ButtonLike>
       </p>
       {blog.user && <p>added by: {blog.user.name}</p>}
       {blog.user && (user.username === blog.user.username) ?
-        <button className="btn btn-delete" onClick={() => deleteBlog(blog)}>Delete</button>
+        <ButtonDelete onClick={() => deleteBlog(blog)}>Delete</ButtonDelete>
         : null}
 
       <h3>comments</h3>
