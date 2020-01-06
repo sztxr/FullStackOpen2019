@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
+import {
+  BrowserRouter as Router,
+  Route, Link, Redirect, withRouter
+} from 'react-router-dom'
 import loginService from './services/login'
 import blogService from './services/blogs'
 import LoginForm from './components/LoginForm'
@@ -13,7 +17,9 @@ import { initBlogs, createBlog, removeBlog } from './reducers/blogReducer'
 import { setUser, setToken, logout } from './reducers/loginReducer'
 import { initUsers } from './reducers/userReducer'
 
+
 import UserList from './components/UserList'
+import User from './components/User'
 
 const App = (props) => {
   const [blogs, setBlogs] = useState([])
@@ -125,36 +131,43 @@ const App = (props) => {
 
   return (
     <div>
-      <h1>Blogs</h1>
+      <Router>
 
-      <div>
-        {props.user.name} logged in
-        <button onClick={handleLogout} className="btn btn-secondary">logout</button>
-      </div>
+        <h1>Blogs</h1>
 
-      <Notification />
+        <div>
+          {props.user.name} logged in
+          <button onClick={handleLogout} className="btn btn-secondary">logout</button>
+        </div>
 
-      <Togglable
-        buttonLabel='Add a new blog'
-        classType='blogForm'
-        ref={blogFormRef}
-      >
-        <BlogForm addBlog={addBlog} />
-      </Togglable>
+        <Notification />
 
-      <ul>
-        {props.blogs.sort(byLikes).map((blog) =>
-          <Blog
-            key={blog.id}
-            blog={blog}
-            user={props.user}
-            likeBlog={likeBlog}
-            deleteBlog={deleteBlog}
-          />
-        )}
-      </ul>
+        <Route exact path='/' render={() => (
+          <>
+            <Togglable
+              buttonLabel='Add a new blog'
+              classType='blogForm'
+              ref={blogFormRef}
+            >
+              <BlogForm addBlog={addBlog} />
+            </Togglable>
 
-      <UserList />
+            <ul>
+              {props.blogs.sort(byLikes).map((blog) =>
+                <Blog
+                  key={blog.id}
+                  blog={blog}
+                  user={props.user}
+                  likeBlog={likeBlog}
+                  deleteBlog={deleteBlog}
+                />
+              )}
+            </ul>
+          </>
+        )} />
+        <Route exact path='/users' render={() => <UserList />}/>
+           
+      </Router>
     </div>
   )
 }
@@ -168,14 +181,14 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = {
-    setNotification,
-    initBlogs,
-    createBlog,
-    removeBlog,
-    setUser,
-    logout,
-    setToken,
-    initUsers
+  setNotification,
+  initBlogs,
+  createBlog,
+  removeBlog,
+  setUser,
+  logout,
+  setToken,
+  initUsers
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)
