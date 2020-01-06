@@ -10,25 +10,13 @@ import Togglable from './components/Togglable'
 import { useField } from './hooks'
 import { setNotification } from './reducers/notificationReducer'
 // import { initBlogs, createBlog, removeBlog } from './reducers/blogReducer'
-import { initBlogs  } from './reducers/blogReducer'
+import { initBlogs } from './reducers/blogReducer'
 
 const App = (props) => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
   const username = useField('text')
   const password = useField('password')
-  const title = useField('text')
-  const author = useField('text')
-  const url = useField('url')
-
-  // get all blogs
-  // useEffect(() => {
-  //   const getBlogs = async () => {
-  //     const blogs = await blogService.getAll()
-  //     setBlogs(blogs.sort((a, b) => b.likes - a.likes))
-  //   }
-  //   getBlogs()
-  // }, [])
 
   useEffect(() => {
     props.initBlogs()
@@ -72,54 +60,30 @@ const App = (props) => {
     setUser(null)
   }
 
-  const blogFormRef = React.createRef()
-
-  const blogForm = () => (
-    <Togglable
-      buttonLabel='Add a new blog'
-      classType='blogForm'
-      ref={blogFormRef}
-    >
-      <BlogForm
-        handleSubmit={addNewBlog}
-        title={title}
-        author={author}
-        url={url}
-      />
-    </Togglable>
-  )
-
-  const addNewBlog = async e => {
+  const addBlog = async (blog) => {
     try {
-      e.preventDefault()
+      const response = await blogService.create(blog)
       blogFormRef.current.toggleVisibility()
-      const blogObject = {
-        title: title.value,
-        author: author.value,
-        url: url.value
-      }
-
-      // props.createBlog(blogObject)
-      const response = await blogService.create(blogObject)
       setBlogs(blogs.concat(response))
-      title.reset()
-      author.reset()
-      url.reset()
-      props.setNotification(`New blog added: ${blogObject.title} by ${blogObject.author}`, 'success', 5)
+      // props.initBlogs()
+      props.setNotification(`New blog added: ${response.title} by ${response.author}`, 'success', 5)
     }
     catch (exception) {
-      console.log(exception)
+      // console.log(exception)
       props.setNotification('Invalid formatting', 'error', 5)
     }
   }
 
-  const updateLikes = async blogToUpdate => {
+  const likeBlog = async blogToUpdate => {
     try {
-      const response = await blogService.update(blogToUpdate)
+      const likedBLog = { ...blogToUpdate, likes: blogToUpdate.likes + 1 }
+      const response = await blogService.update(likedBLog)
       const updatedBlogList = blogs.map(blog => {
         return blog.id === response.id ? response : blog
       })
       setBlogs(updatedBlogList)
+      props.initBlogs()
+      props.setNotification(`Blog: ${blogToUpdate.title} by ${blogToUpdate.author} liked!`, 'success', 5)
     }
     catch (exception) {
       console.log(exception)
@@ -128,28 +92,22 @@ const App = (props) => {
 
   const deleteBlog = async blogToDelete => {
     try {
-      const response = await blogService.remove(blogToDelete)
-      const updatedBlogList = blogs.filter(blog => blog.id !== response.id)
-      setBlogs(updatedBlogList)
-      props.removeBlog(blogToDelete)
-      props.setNotification(`Blog: '${blogToDelete.title} by ${blogToDelete.author}' has been deleted`, 'success', 5)
+      if (window.confirm(`Delete: '${blogToDelete.title} by ${blogToDelete.author}'?`)) {
+        const response = await blogService.remove(blogToDelete)
+        const updatedBlogList = blogs.filter(blog => blog.id !== response.id)
+        setBlogs(updatedBlogList)
+        props.initBlogs()
+      }
     }
     catch (exception) {
-      console.log(exception)
+      // console.log(exception)
       props.setNotification('Couldn\'t delete blog', 'error', 5)
     }
   }
 
-  console.log(props)
-  const renderItems = () => props.blogs.map((blog) =>
-    <Blog
-      key={blog.id}
-      blog={blog}
-      user={user}
-      updateLikes={updateLikes}
-      deleteBlog={deleteBlog}
-    />
-  )
+  const blogFormRef = React.createRef()
+
+  const byLikes = (a, b) => b.likes - a.likes
 
   if (user === null) {
     return (
@@ -178,10 +136,24 @@ const App = (props) => {
 
       <Notification />
 
-      {blogForm()}
+      <Togglable
+        buttonLabel='Add a new blog'
+        classType='blogForm'
+        ref={blogFormRef}
+      >
+        <BlogForm addBlog={addBlog} />
+      </Togglable>
 
       <ul>
-        {renderItems()}
+        {props.blogs.map((blog) =>
+          <Blog
+            key={blog.id}
+            blog={blog}
+            user={user}
+            likeBlog={likeBlog}
+            deleteBlog={deleteBlog}
+          />
+        )}
       </ul>
     </div>
   )

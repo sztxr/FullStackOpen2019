@@ -1,8 +1,23 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { useField } from '../hooks'
 
 const BlogForm = (props) => {
-  const { handleSubmit, title, author, url } = props
+  const title = useField('text')
+  const author = useField('text')
+  const url = useField('url')
+
+  const handleSubmit = e => {
+    e.preventDefault()
+    props.addBlog({
+      title: title.value,
+      author: author.value,
+      url: url.value
+    })
+    title.reset()
+    author.reset()
+    url.reset()
+  }
 
   return (
     <>
@@ -25,10 +40,7 @@ const BlogForm = (props) => {
 }
 
 BlogForm.propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
-  title: PropTypes.object.isRequired,
-  author: PropTypes.object.isRequired,
-  url: PropTypes.object.isRequired
+  addBlog: PropTypes.func.isRequired,
 }
 
 export default BlogForm
