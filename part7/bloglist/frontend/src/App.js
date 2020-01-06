@@ -11,6 +11,9 @@ import { useField } from './hooks'
 import { setNotification } from './reducers/notificationReducer'
 import { initBlogs, createBlog, removeBlog } from './reducers/blogReducer'
 import { setUser, setToken, logout } from './reducers/loginReducer'
+import { initUsers } from './reducers/userReducer'
+
+import UserList from './components/UserList'
 
 const App = (props) => {
   const [blogs, setBlogs] = useState([])
@@ -19,6 +22,7 @@ const App = (props) => {
 
   useEffect(() => {
     props.initBlogs()
+    props.initUsers()
   }, [])
 
   // get user details from local storage
@@ -149,6 +153,8 @@ const App = (props) => {
           />
         )}
       </ul>
+
+      <UserList />
     </div>
   )
 }
@@ -168,7 +174,8 @@ const mapDispatchToProps = {
     removeBlog,
     setUser,
     logout,
-    setToken
+    setToken,
+    initUsers
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)
