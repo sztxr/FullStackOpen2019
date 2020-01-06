@@ -9,8 +9,7 @@ import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import { useField } from './hooks'
 import { setNotification } from './reducers/notificationReducer'
-// import { initBlogs, createBlog, removeBlog } from './reducers/blogReducer'
-import { initBlogs } from './reducers/blogReducer'
+import { initBlogs, createBlog, removeBlog } from './reducers/blogReducer'
 
 const App = (props) => {
   const [blogs, setBlogs] = useState([])
@@ -62,15 +61,28 @@ const App = (props) => {
 
   const addBlog = async (blog) => {
     try {
-      const response = await blogService.create(blog)
+      // const response = await blogService.create(blog)
+      props.createBlog(blog)
       blogFormRef.current.toggleVisibility()
-      setBlogs(blogs.concat(response))
-      // props.initBlogs()
-      props.setNotification(`New blog added: ${response.title} by ${response.author}`, 'success', 5)
+      // setBlogs(blogs.concat(response))
+      props.initBlogs()
+      props.setNotification(`New blog added: ${blog.title} by ${blog.author}`, 'success', 5)
     }
     catch (exception) {
       // console.log(exception)
       props.setNotification('Invalid formatting', 'error', 5)
+    }
+  }
+
+  const deleteBlog = async blogToDelete => {
+    try {
+      if (window.confirm(`Delete: '${blogToDelete.title} by ${blogToDelete.author}'?`)) {
+        props.removeBlog(blogToDelete)
+      }
+    }
+    catch (exception) {
+      // console.log(exception)
+      props.setNotification('Couldn\'t delete blog', 'error', 5)
     }
   }
 
@@ -87,21 +99,6 @@ const App = (props) => {
     }
     catch (exception) {
       console.log(exception)
-    }
-  }
-
-  const deleteBlog = async blogToDelete => {
-    try {
-      if (window.confirm(`Delete: '${blogToDelete.title} by ${blogToDelete.author}'?`)) {
-        const response = await blogService.remove(blogToDelete)
-        const updatedBlogList = blogs.filter(blog => blog.id !== response.id)
-        setBlogs(updatedBlogList)
-        props.initBlogs()
-      }
-    }
-    catch (exception) {
-      // console.log(exception)
-      props.setNotification('Couldn\'t delete blog', 'error', 5)
     }
   }
 
@@ -145,7 +142,7 @@ const App = (props) => {
       </Togglable>
 
       <ul>
-        {props.blogs.map((blog) =>
+        {props.blogs.sort(byLikes).map((blog) =>
           <Blog
             key={blog.id}
             blog={blog}
@@ -168,6 +165,6 @@ const mapStateToProps = (state) => {
 export default connect(mapStateToProps, {
   setNotification,
   initBlogs,
-  // createBlog,
-  // removeBlog
+  createBlog,
+  removeBlog
 })(App)
