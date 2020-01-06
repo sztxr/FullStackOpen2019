@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
+
 import loginService from './services/login'
 import blogService from './services/blogs'
 import LoginForm from './components/LoginForm'
@@ -8,15 +9,15 @@ import BlogForm from './components/BlogForm'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
+import UserList from './components/UserList'
+import User from './components/User'
+import BlogPage from './components/BlogPage'
+
 import { useField } from './hooks'
 import { setNotification } from './reducers/notificationReducer'
 import { initBlogs, createBlog, removeBlog } from './reducers/blogReducer'
 import { setUser, setToken, logout } from './reducers/loginReducer'
 import { initUsers } from './reducers/userReducer'
-
-
-import UserList from './components/UserList'
-import User from './components/User'
 
 const App = (props) => {
   const [blogs, setBlogs] = useState([])
@@ -110,8 +111,8 @@ const App = (props) => {
 
   const byLikes = (a, b) => b.likes - a.likes
 
-  const userById = (id) => {
-    return props.users.find(user => user.id === id)
+  const byId = (item, id) => {
+    return props[item].find(item => item.id === id)
   }
 
   if (props.user === null) {
@@ -158,18 +159,23 @@ const App = (props) => {
                 <Blog
                   key={blog.id}
                   blog={blog}
-                  user={props.user}
-                  likeBlog={likeBlog}
-                  deleteBlog={deleteBlog}
                 />
               )}
             </ul>
           </>
         )} />
-        <Route exact path='/users' render={() => <UserList />}/>
+        <Route exact path='/users' render={() => <UserList />} />
         <Route path='/users/:id' render={({ match }) => (
-          <User user={userById(match.params.id)} />
-        )}/>
+          <User user={byId('users', match.params.id)} />
+        )} />
+        <Route path='/blogs/:id' render={({ match }) => (
+          <BlogPage
+            blog={byId('blogs', match.params.id)}
+            user={props.user}
+            likeBlog={likeBlog}
+            deleteBlog={deleteBlog}
+          />
+        )} />
 
       </Router>
     </div>
