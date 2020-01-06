@@ -23,11 +23,11 @@ const Menu = (props) => {
     <div style={style.container}>
       <Link href='#' style={style.item} to='/'>blogs</Link>
       <Link href='#' style={style.item} to='/users'>users</Link>
-      <div style={style.item, style.flex}>
+      <div style={{...style.item, ...style.flex}}>
         <strong>{props.user}</strong>&nbsp;logged in
         <button onClick={props.handleLogout} className="btn btn-secondary">logout</button>
-      </div>
     </div>
+    </div >
   )
 }
 

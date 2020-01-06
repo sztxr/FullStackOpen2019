@@ -3,9 +3,9 @@ import PropTypes from 'prop-types'
 
 const BlogPage = (props) => {
   const { blog, user, likeBlog, deleteBlog } = props
-
+  
   if (blog === undefined) return null
-
+  
   return (
     <div className="blogInfo">
       <h2>{blog.title}</h2>
@@ -21,6 +21,12 @@ const BlogPage = (props) => {
       {blog.user && (user.username === blog.user.username) ?
         <button className="btn btn-delete" onClick={() => deleteBlog(blog)}>Delete</button>
         : null}
+      <h3>comments</h3>
+      <ul>
+        {blog.comments.map(comment =>
+          <li key={comment.id}>{comment.content}</li>
+        )}
+      </ul>
     </div>
   )
 }
