@@ -16,7 +16,7 @@ import Menu from './components/Menu'
 
 import { useField } from './hooks'
 import { setNotification } from './reducers/notificationReducer'
-import { initBlogs, createBlog, removeBlog } from './reducers/blogReducer'
+import { initBlogs, createBlog, removeBlog, addComment } from './reducers/blogReducer'
 import { setUser, setToken, logout } from './reducers/loginReducer'
 import { initUsers } from './reducers/userReducer'
 
@@ -197,7 +197,8 @@ const mapDispatchToProps = {
   setUser,
   logout,
   setToken,
-  initUsers
+  initUsers,
+  addComment
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)

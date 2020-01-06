@@ -10,6 +10,8 @@ const blogReducer = (state = [], action) => {
       return [...state, action.data]
     case 'REMOVE_BLOG':
       return action.data
+    case 'ADD_COMMENT':
+      return action.data
     default:
       return state
   }
@@ -42,6 +44,17 @@ export const removeBlog = blog => {
     const data = await blogService.getAll()
     dispatch({
       type: 'REMOVE_BLOG',
+      data
+    })
+  }
+}
+
+export const addComment = (blog, comment) => {
+  return async dispatch => {
+    await blogService.addComment(blog, comment)
+    const data = await blogService.getAll()
+    dispatch({
+      type: 'ADD_COMMENT',
       data
     })
   }

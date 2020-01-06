@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import CommentForm from './CommentForm'
 
 const BlogPage = (props) => {
   const { blog, user, likeBlog, deleteBlog } = props
@@ -21,7 +22,9 @@ const BlogPage = (props) => {
       {blog.user && (user.username === blog.user.username) ?
         <button className="btn btn-delete" onClick={() => deleteBlog(blog)}>Delete</button>
         : null}
+
       <h3>comments</h3>
+      <CommentForm blog={blog}/>
       <ul>
         {blog.comments.map(comment =>
           <li key={comment.id}>{comment.content}</li>
