@@ -1,8 +1,11 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 
-const Blog = ({ blog, user, likeBlog, deleteBlog }) => {
+const Blog = (props) => {
+  const { blog, user, likeBlog, deleteBlog } = props
   const [expand, setExpand] = useState(false)
+
+  console.log(props)
 
   const handleLikeClick = e => {
     e.stopPropagation() // stop div from closing
