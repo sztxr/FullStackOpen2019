@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
-import {
-  BrowserRouter as Router,
-  Route, Link, Redirect, withRouter
-} from 'react-router-dom'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
 import loginService from './services/login'
 import blogService from './services/blogs'
 import LoginForm from './components/LoginForm'
@@ -113,6 +110,10 @@ const App = (props) => {
 
   const byLikes = (a, b) => b.likes - a.likes
 
+  const userById = (id) => {
+    return props.users.find(user => user.id === id)
+  }
+
   if (props.user === null) {
     return (
       <div>
@@ -166,7 +167,10 @@ const App = (props) => {
           </>
         )} />
         <Route exact path='/users' render={() => <UserList />}/>
-           
+        <Route path='/users/:id' render={({ match }) => (
+          <User user={userById(match.params.id)} />
+        )}/>
+
       </Router>
     </div>
   )
@@ -176,7 +180,8 @@ const mapStateToProps = (state) => {
   // console.log(state)
   return {
     blogs: state.blogs,
-    user: state.login
+    user: state.login,
+    users: state.users
   }
 }
 
