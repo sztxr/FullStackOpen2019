@@ -12,6 +12,7 @@ import Togglable from './components/Togglable'
 import UserList from './components/UserList'
 import User from './components/User'
 import BlogPage from './components/BlogPage'
+import Menu from './components/Menu'
 
 import { useField } from './hooks'
 import { setNotification } from './reducers/notificationReducer'
@@ -135,12 +136,9 @@ const App = (props) => {
     <div>
       <Router>
 
-        <h1>Blogs</h1>
+        <Menu user={props.user.name} handleLogout={handleLogout}/>
 
-        <div>
-          {props.user.name} logged in
-          <button onClick={handleLogout} className="btn btn-secondary">logout</button>
-        </div>
+        <h1>Blogs</h1>
 
         <Notification />
 
