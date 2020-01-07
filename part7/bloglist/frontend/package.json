@@ -25,7 +25,8 @@
     "lint:fix": "eslint . --fix",
     "start:wp": "webpack-dev-server --mode=development",
     "build:wp": "webpack --mode=production",
-    "build:wp:dev": "webpack --mode=development"
+    "build:wp:dev": "webpack --mode=development",
+    "cypress:open": "cypress open"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -51,6 +52,7 @@
     "@testing-library/react": "^9.4.0",
     "babel-loader": "^8.0.6",
     "css-loader": "^3.4.1",
+    "cypress": "^3.8.1",
     "eslint-plugin-jest": "^23.3.0",
     "style-loader": "^1.1.2",
     "webpack": "^4.41.5",

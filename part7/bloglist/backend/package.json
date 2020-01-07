@@ -9,7 +9,8 @@
     "lint": "eslint . || exit 0",
     "test": "NODE_ENV=test jest --verbose --runInBand",
     "test:api": "npx jest tests/blog_api.test.js --runInBand",
-    "test:user": "npx jest tests/user_api.test.js --runInBand"
+    "test:user": "npx jest tests/user_api.test.js --runInBand",
+    "start:test": "NODE_ENV=test node index.js"
   },
   "author": "sztxr",
   "license": "ISC",
