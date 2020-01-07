@@ -25,16 +25,16 @@ const BlogForm = (props) => {
       <h2>Add new blog</h2>
       <form onSubmit={handleSubmit}>
         <div>
-          Title: <Input {...title} reset={null} />
+          Title: <Input {...title} reset={null} id="blog-title" />
         </div>
 
         <div>
-          Author: <Input {...author} reset={null} />
+          Author: <Input {...author} reset={null} id="blog-author" />
         </div>
         <div>
-          URL: <Input {...url} reset={null} />
+          URL: <Input {...url} reset={null} id="blog-url" />
         </div>
-        <Button primary type="submit">Add</Button>
+        <Button primary type="submit" id="blog-submit">Add</Button>
       </form>
     </>
   )

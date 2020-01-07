@@ -15,7 +15,7 @@ const BlogPage = (props) => {
       <p>url: <a href={blog.url}>{blog.url}</a></p>
       <p>
         likes: {blog.likes}
-        <ButtonLike onClick={() => likeBlog(blog)}>
+        <ButtonLike onClick={() => likeBlog(blog)} id="blog-like">
           <span role="img" aria-label="like">&#128077;</span>
         </ButtonLike>
       </p>
