@@ -103,7 +103,7 @@ const typeDefs = gql`
     hello: String!,
     bookCount: Int!,
     authorCount: Int!,
-    allBooks: [Book!]!,
+    allBooks(author: String): [Book!]!,
     allAuthors: [Author!]!
   }
 `
@@ -113,7 +113,16 @@ const resolvers = {
     hello: () => { return "world" },
     bookCount: () => books.length,
     authorCount: () => authors.length,
-    allBooks: () => books,
+    allBooks: (root, args) => {
+      // * cases must equal to true, not just implicitly true
+      //*  !!<condition> converts each case to a Boolean value
+      switch (true) {
+        case (!!args.author):
+          return books.filter(book => book.author === args.author)
+        default:
+          return books
+      }
+    },
     allAuthors: () => authors
   },
   Author: {
