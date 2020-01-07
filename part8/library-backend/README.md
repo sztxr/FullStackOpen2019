@@ -1,10 +1,10 @@
 # Full Stack Open 2019 &mdash; GraphQL Exercise
 ### **library-backend** with *GraphQL*
 
-### &mdash; Start GraphQL-playground: `npm start`
+#### &mdash; Start GraphQL-playground: `npm start`
 
 ## Queries
-### &mdash; return the number of books and the number of authors
+#### &mdash; return the number of books and the number of authors
 ```js
 query {
   bookCount
@@ -12,7 +12,7 @@ query {
 }
 ```
 
-### &mdash; return the details of all books / all authors
+#### &mdash; return the details of all books / all authors
 ```js
 query {
   allBooks { 
@@ -31,7 +31,7 @@ query {
 }
 ```
 
-### &mdash; return the details of all books with optional parameters
+#### &mdash; return the details of all books with optional parameters
 ```js
 // by author
 query {
@@ -59,7 +59,7 @@ query {
 
 ## Mutations
 
-### &mdash; A new person can be added with the following mutation
+#### &mdash; A new person can be added with the following mutation
 ```js
 // when author already exist
 mutation {
@@ -88,7 +88,7 @@ mutation {
 }
 ```
 
-### &mdash; Mutation to set a birth year for an author
+#### &mdash; Mutation to set a birth year for an author
 ```js
 mutation {
   editAuthor(name: "Reijo Mäki", setBornTo: 1958) {
