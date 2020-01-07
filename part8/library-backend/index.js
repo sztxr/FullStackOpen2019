@@ -103,7 +103,7 @@ const typeDefs = gql`
     hello: String!,
     bookCount: Int!,
     authorCount: Int!,
-    allBooks(author: String): [Book!]!,
+    allBooks(author: String, genre: String): [Book!]!,
     allAuthors: [Author!]!
   }
 `
@@ -119,6 +119,8 @@ const resolvers = {
       switch (true) {
         case (!!args.author):
           return books.filter(book => book.author === args.author)
+        case (!!args.genre):
+          return books.filter(book => book.genres.includes(args.genre))
         default:
           return books
       }
