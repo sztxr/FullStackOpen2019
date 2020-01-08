@@ -44,7 +44,10 @@ const Authors = (props) => {
         </tbody>
       </table>
 
-      <EditBirthYear authors={response} />
+      {props.token === null
+        ? null
+        : <EditBirthYear authors={response} />  
+      }
     </div>
   )
 }
