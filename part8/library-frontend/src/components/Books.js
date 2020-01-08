@@ -7,8 +7,8 @@ const ALL_BOOKS = gql`
     allBooks { 
       title 
       author
-      published 
-      genres
+      published
+      id
     }
   }
 `
@@ -35,7 +35,7 @@ const Books = (props) => {
             </th>
           </tr>
           {response.data.allBooks.map(a =>
-            <tr key={a.title}>
+            <tr key={a.id}>
               <td>{a.title}</td>
               <td>{a.author}</td>
               <td>{a.published}</td>
