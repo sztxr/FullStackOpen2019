@@ -107,3 +107,36 @@ mutation {
   }
 }
 ```
+
+#### &mdash; Creating user
+```js
+mutation create{
+  createUser(
+    username: "sztxr"
+    favoriteGenre: "javascript"
+  ) {
+    username
+    favoriteGenre
+    id
+  }
+}
+```
+
+#### &mdash; Logging in
+```js
+mutation login {
+  login(
+    username: "sztxr"
+    password: "secret"
+  ) {
+    value
+  }
+}
+```
+
+#### &mdash; HTTP HEADERS for queries
+```js
+{
+  "Authorization": "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}
+```
