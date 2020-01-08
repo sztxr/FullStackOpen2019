@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { gql } from 'apollo-boost'
 import { useQuery } from '@apollo/react-hooks'
 
@@ -8,6 +8,7 @@ export const ALL_BOOKS = gql`
       title 
       published
       id
+      genres
       author {
         name
       }
@@ -17,9 +18,31 @@ export const ALL_BOOKS = gql`
 
 const Books = (props) => {
   const response = useQuery(ALL_BOOKS)
+  const [genres, setGenres] = useState([])
+  const [filteredBooks, setFilteredBooks] = useState(null)
 
-  if (!props.show) { return null }
+  useEffect(() => {
+    if (response.data) {
+      setFilteredBooks(response.data.allBooks.filter(book => {
+        book.genres.forEach(genre => {
+          console.log(genre)
+          if (!genres.includes(genre)) setGenres(genres.concat(genre))
+        })
+        return book
+      }))
+    }
+  }, [response.data, genres])
+
+  if (!props.show) return null
   if (response.loading) return <div>loading...</div>
+
+  const filteredBooksByGenre = (filter) => {
+    setFilteredBooks(response.data.allBooks.filter(book => book.genres.includes(filter)))
+  }
+
+  const allBooks = () => {
+    setFilteredBooks(response.data.allBooks.map(book => book))
+  }
 
   return (
     <div>
@@ -36,15 +59,20 @@ const Books = (props) => {
               published
             </th>
           </tr>
-          {response.data.allBooks.map(a =>
-            <tr key={a.id}>
-              <td>{a.title}</td>
-              <td>{a.author.name}</td>
-              <td>{a.published}</td>
+          {filteredBooks.map(book =>
+            <tr key={book.id}>
+              <td>{book.title}</td>
+              <td>{book.author.name}</td>
+              <td>{book.published}</td>
             </tr>
           )}
         </tbody>
       </table>
+      <br />
+      <div>
+        {genres.map(g => <button key={g} onClick={() => filteredBooksByGenre(g)}>{g}</button>)}
+        <button onClick={() => allBooks()}>all genres</button>
+      </div>
     </div>
   )
 }

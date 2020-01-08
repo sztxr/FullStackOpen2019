@@ -76,7 +76,7 @@ const typeDefs = gql`
 
 const resolvers = {
   Query: {
-    me: (root, args, context) => { context.currentUser },
+    me: (root, args, context) => context.currentUser,
     bookCount: () => Book.collection.countDocuments(),
     authorCount: () => Author.collection.countDocuments(),
     allBooks: async (root, args) => {
