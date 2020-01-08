@@ -31,13 +31,6 @@ const EditBirthYear = (props) => {
     setBirthYear('')
   }
 
-  /*
-  <input
-            value={name}
-            onChange={({ target }) => setName(target.value)}
-          />
-  */
-
   return (
     <div>
       <h3>set birthyear</h3>
