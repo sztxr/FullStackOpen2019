@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { gql } from 'apollo-boost'
 import { useQuery } from '@apollo/react-hooks'
 
@@ -34,7 +34,7 @@ const Authors = (props) => {
             </th>
           </tr>
           {response.data.allAuthors.map(a =>
-            <tr key={a.name}>
+            <tr key={a.id}>
               <td>{a.name}</td>
               <td>{a.born}</td>
               <td>{a.bookCount}</td>
