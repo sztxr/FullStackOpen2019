@@ -42,23 +42,22 @@ const EditBirthYear = (props) => {
     <div>
       <h3>set birthyear</h3>
       <form onSubmit={submit}>
-        <div>
-          <label htmlFor="authorName">Author:</label>
-          <select name="authorName" onChange={({ target }) => setName(target.value)}>
+        <label>
+          Author: <select onChange={({ target }) => setName(target.value)}>
             {props.authors.data.allAuthors.map(a => (
               <option key={a.id} value={a.name}>{a.name}</option>
-            ))}            
+            ))}
           </select>
-        </div>
-        <div>
-          <label htmlFor="birthyear">Born on:</label>
-          <input
-            name="birthyear"
+        </label>
+        <br/>
+        <label>
+          Born on: <input
             type="number"
             value={birthYear}
             onChange={({ target }) => setBirthYear(target.value)}
           />
-        </div>
+        </label>
+        <br/>
         <button type='submit'>update author</button>
       </form>
     </div>
