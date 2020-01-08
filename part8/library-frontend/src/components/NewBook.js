@@ -13,7 +13,9 @@ const ADD_BOOK = gql`
       genres: $genres
     ) {
       title
-      author
+      author {
+        name
+      }
       published
       genres
     }
@@ -21,6 +23,7 @@ const ADD_BOOK = gql`
 `
 
 const NewBook = (props) => {
+  console.log(props)
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [published, setPublished] = useState('')

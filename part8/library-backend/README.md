@@ -17,9 +17,11 @@ query {
 query {
   allBooks { 
     title 
-    author
     published 
     genres
+    author {
+      name
+    }
   }
 }
 
@@ -44,7 +46,9 @@ query {
 query {
   allBooks(genre: "refactoring") {
     title
-    author
+    author {
+      name
+    }
   }
 }
 
@@ -52,7 +56,9 @@ query {
 query {
   allBooks(author: "Robert Martin", genre: "refactoring") {
     title
-    author
+    author {
+      name
+    }
   }
 }
 ```
@@ -70,7 +76,9 @@ mutation {
     genres: ["database", "nosql"]
   ) {
     title,
-    author
+    author {
+      name
+    }
   }
 }
 
@@ -83,7 +91,9 @@ mutation {
     genres: ["crime"]
   ) {
     title,
-    author
+    author {
+      name
+    }
   }
 }
 ```
