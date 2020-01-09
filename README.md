@@ -33,7 +33,7 @@ This repository contains my submissions for the course Full Stack Open 2019.
   - [routed-anecdotes](https://github.com/sztxr/FullStackOpen2019/tree/master/part7/routed-anecdotes)
   - [bloglist]() (frontend + backend)
 
-<!--
+
 - [**part8**](https://github.com/sztxr/FullStackOpen2019/tree/master/part8) &mdash; GraphQL
-  - []()
--->
+  - [GraphQL Library Frontend](https://github.com/sztxr/FullStackOpen2019/tree/master/part8/library-backend)
+  - [GraphQL Library Backend](https://github.com/sztxr/FullStackOpen2019/tree/master/part8/library-backend)
