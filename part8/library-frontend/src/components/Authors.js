@@ -10,6 +10,9 @@ export const ALL_AUTHORS = gql`
       born
       bookCount
       id
+      books {
+        title
+      }
     }
   }
 `
