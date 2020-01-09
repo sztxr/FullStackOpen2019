@@ -34,6 +34,7 @@ const typeDefs = gql`
     born: Int,
     id: ID!,
     bookCount: Int!
+    books: [Book!]!
   }
 
   type User {
@@ -102,7 +103,7 @@ const resolvers = {
           return Book.find({}).populate('author')
       }
     },
-    allAuthors: () => Author.find({})
+    allAuthors: () => Author.find({}).populate('books')
   },
   Author: {
     bookCount: async ({ name }) => {
