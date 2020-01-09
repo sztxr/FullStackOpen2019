@@ -25,7 +25,6 @@ const Books = (props) => {
     if (response.data) {
       setFilteredBooks(response.data.allBooks.filter(book => {
         book.genres.forEach(genre => {
-          console.log(genre)
           if (!genres.includes(genre)) setGenres(genres.concat(genre))
         })
         return book

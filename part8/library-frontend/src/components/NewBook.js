@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { gql } from 'apollo-boost'
-import { useMutation } from '@apollo/react-hooks'
+import { useMutation, useSubscription, useApolloClient } from '@apollo/react-hooks'
 import { ALL_BOOKS } from './Books'
 import { ALL_AUTHORS } from './Authors'
 
@@ -22,22 +22,72 @@ const ADD_BOOK = gql`
   }
 `
 
+const BOOK_DETAILS = gql`
+  fragment BookDetails on Book {
+    title
+    published
+    genres
+    id
+    author {
+      name
+    }
+  }
+`
+
+const BOOK_ADDED = gql`
+  subscription {
+    bookAdded {
+      ...BookDetails
+    }
+  }
+  ${BOOK_DETAILS}
+`
+
 const NewBook = (props) => {
+  const client = useApolloClient()
+
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [published, setPublished] = useState('')
   const [genre, setGenre] = useState('')
   const [genres, setGenres] = useState([])
+  const [errorMessage, setErrorMessage] = useState(null)
 
-  // const [errorMessage, setErrorMessage] = useState(null)
-  // const handleError = (error) => {
-  //   setErrorMessage(error.graphQLErrors[0].message)
-  //   setTimeout(() => { setErrorMessage(null) }, 5000)
-  // }
+  const handleError = (error) => {
+    setErrorMessage(error.message)
+    setTimeout(() => { setErrorMessage(null) }, 5000)
+  }
+
+  const notify = (message) => {
+    setErrorMessage(message)
+    setTimeout(() => { setErrorMessage(null) }, 5000)
+  }
 
   const [addBook] = useMutation(ADD_BOOK, {
-    // onError: handleError,
+    onError: handleError,
     refetchQueries: [{ query: ALL_BOOKS }, { query: ALL_AUTHORS }]
+  })
+
+  const updateCacheWith = (addedBook) => {
+    const includedIn = (set, object) =>
+      set.map(p => p.id).includes(object.id)
+
+    const dataInStore = client.readQuery({ query: ALL_BOOKS })
+    if (!includedIn(dataInStore.allBooks, addedBook)) {
+      dataInStore.allBooks.push(addedBook)
+      client.writeQuery({
+        query: ALL_BOOKS,
+        data: dataInStore
+      })
+    }
+  }
+
+  useSubscription(BOOK_ADDED, {
+    onSubscriptionData: ({ subscriptionData }) => {
+      const addedBook = subscriptionData.data.bookAdded
+      notify(`New book added: ${addedBook.title}`)
+      updateCacheWith(addedBook)
+    }
   })
 
   if (!props.show) return null
@@ -62,9 +112,9 @@ const NewBook = (props) => {
 
   return (
     <div>
-      {/* {errorMessage &&
+      {errorMessage &&
         <div style={{ color: 'red' }}>{errorMessage}</div>
-      } */}
+      }
 
       <form onSubmit={submit}>
         <div>
